@@ -10,6 +10,7 @@ export default function LanguageSwitcher() {
 
   const handleLanguageChange = (newLocale: string) => {
     if (newLocale === currentLocale) return;
+
     startTransition(async () => {
       await setLocaleAction(newLocale);
       window.location.reload();
