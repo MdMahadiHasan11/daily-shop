@@ -1,3 +1,5 @@
+import CategoryCards from "@/components/modules/home/category-special-offer";
+import HeroAd from "@/components/modules/home/hero-ad";
 import Head from "next/head";
 
 export default function Home() {
@@ -13,8 +15,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1 className="text-title font-bold">Here All</h1>
-        <div className="text-title font-bold  h-360 bg-black/10">Here All</div>
+        <div className="container mx-auto px-3 md:px-6">
+          <div className=" ">
+            <HeroAd className="w-full max-w-308 ml-auto px-3 md:px-6 mt-1  " />
+          </div>
+          <div className=" ">
+            <CategoryCards className="w-full max-w-308 ml-auto px-3 md:px-6  " />
+          </div>
+        </div>
       </main>
     </>
   );

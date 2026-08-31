@@ -1,40 +1,130 @@
-import {
-  ChevronRight,
-  HelpCircle,
-  MoreVertical,
-  Search,
-  ShoppingBag,
-  Store,
-} from "lucide-react";
+import { ChevronRight, HelpCircle, ShoppingBag, Store } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { NavCategoryItem } from "@/types";
+import { MobileAuthSection, MobileAuthSkeleton } from "./MobileAuthSection";
+import MobileMenu from "./mobile-menu";
+
 import {
-  AuthSection,
   AuthSkeleton,
   CategoryDropdown,
   CategorySkeleton,
-  LocationSection,
   LocationSkeleton,
 } from "./nav-dynamic";
-
-import MobileMenu from "./mobile-menu";
-import { MobileAuthSection, MobileAuthSkeleton } from "./MobileAuthSection";
+import { NavSearch } from "./nav-search";
+import { AuthSection, LocationSection } from "./nav-server-sections";
 import NavbarScrollWrapper from "./navbar-scroll-wrapper";
 
-export default async function Navbar() {
-  const fixedNavItems = [
-    { href: "/summer-fest", label: "SUMMER FEST" },
-    { href: "/great-deals", label: "GREAT DEALS" },
-    { href: "/unilever", label: "UNILEVER-STOCK & SAVE" },
-    { href: "/buy-save", label: "BUY & SAVE MORE" },
-    { href: "/our-brands", label: "OUR BRANDS" },
-    { href: "/womens-corner", label: "WOMEN'S CORNER" },
-  ];
+export const FIXED_NAV_ITEMS = [
+  { href: "/summer-fest", label: "SUMMER FEST" },
+  { href: "/great-deals", label: "GREAT DEALS" },
+  { href: "/unilever", label: "UNILEVER-STOCK & SAVE" },
+  { href: "/buy-save", label: "BUY & SAVE MORE" },
+  { href: "/our-brands", label: "OUR BRANDS" },
+  { href: "/womens-corner", label: "WOMEN'S CORNER" },
+];
 
+export const CATEGORIES: NavCategoryItem[] = [
+  {
+    label: "Food",
+    href: "/category/food",
+    iconName: "UtensilsCrossed",
+    subcategories: [
+      {
+        label: "Cooking Essentials",
+        href: "/category/food/cooking-essentials",
+        subcategories: [
+          {
+            label: "Oil & Ghee",
+            href: "/category/food/cooking-essentials/oil-ghee",
+            subcategories: [
+              {
+                label: "Mustard Oil",
+                href: "/category/food/cooking-essentials/oil-ghee/mustard",
+              },
+              {
+                label: "Soybean Oil",
+                href: "/category/food/cooking-essentials/oil-ghee/soybean",
+              },
+            ],
+          },
+          {
+            label: "Rice & Flour",
+            href: "/category/food/cooking-essentials/rice-flour",
+          },
+          {
+            label: "Spices & Salt",
+            href: "/category/food/cooking-essentials/spices",
+          },
+        ],
+      },
+      {
+        label: "Fruits & Vegetables",
+        href: "/category/food/fruits-vegetables",
+        subcategories: [
+          {
+            label: "Fresh Fruits",
+            href: "/category/food/fruits-vegetables/fresh-fruits",
+          },
+          {
+            label: "Fresh Vegetables",
+            href: "/category/food/fruits-vegetables/fresh-vegetables",
+          },
+        ],
+      },
+      { label: "Meat & Fish", href: "/category/food/meat-fish" },
+      { label: "Snacks & Biscuits", href: "/category/food/snacks" },
+    ],
+  },
+  {
+    label: "Baby Food & Care",
+    href: "/category/baby-care",
+    iconName: "Baby",
+    subcategories: [
+      {
+        label: "Baby Formula",
+        href: "/category/baby-care/formula",
+        subcategories: [
+          {
+            label: "Stage 1 (0-6M)",
+            href: "/category/baby-care/formula/stage-1",
+          },
+          {
+            label: "Stage 2 (6-12M)",
+            href: "/category/baby-care/formula/stage-2",
+          },
+        ],
+      },
+      { label: "Baby Wipes", href: "/category/baby-care/wipes" },
+    ],
+  },
+  { label: "Diapers", href: "/category/diapers", iconName: "Sparkles" },
+  { label: "Home Cleaning", href: "/category/home-cleaning", iconName: "Home" },
+  { label: "Pet Care", href: "/category/pet-care", iconName: "HeartPulse" },
+  {
+    label: "Beauty & Health",
+    href: "/category/beauty-health",
+    iconName: "HeartPulse",
+  },
+  {
+    label: "Fashion & Lifestyle",
+    href: "/category/fashion",
+    iconName: "Shirt",
+  },
+  { label: "Home & Kitchen", href: "/category/home-kitchen", iconName: "Home" },
+  { label: "Stationeries", href: "/category/stationeries", iconName: "Pencil" },
+  {
+    label: "Toys & Sports",
+    href: "/category/toys-sports",
+    iconName: "Dumbbell",
+  },
+  { label: "Gadget", href: "/category/gadget", iconName: "Computer" },
+];
+
+export default async function Navbar() {
   return (
     <>
-      {/* Top Banner (Mobile Only) */}
       <div className="bg-[#FFE01B] text-black md:hidden py-1.5 px-4 border-b border-black/5 relative z-40">
         <div className="container mx-auto flex items-center justify-between text-xs font-semibold">
           <div className="flex items-center gap-2">
@@ -56,14 +146,11 @@ export default async function Navbar() {
         </div>
       </div>
 
-      {/* Client Scroll Wrapper wraps Server Content */}
       <NavbarScrollWrapper>
-        {/* Main Nav Bar */}
         <nav className="bg-primary text-primary-foreground py-2.5 md:py-3.5 transition-all duration-300 ease-out in-[.is-scrolled]:md:py-2">
           <div className="container mx-auto flex items-center justify-between px-3 md:px-6 gap-2 md:gap-4">
-            {/* Mobile Menu & Logo */}
             <div className="flex items-center gap-2 shrink-0">
-              <MobileMenu navItems={fixedNavItems} />
+              <MobileMenu navItems={FIXED_NAV_ITEMS} categories={CATEGORIES} />
 
               <Link href="/" className="flex items-center space-x-1.5 shrink-0">
                 <div className="h-8 w-8 md:h-10 md:w-10 rounded bg-white text-primary flex items-center justify-center transition-all duration-300 ease-out">
@@ -80,30 +167,21 @@ export default async function Navbar() {
               </Link>
             </div>
 
-            {/* Location (Desktop Only) */}
             <div className="hidden lg:block w-52 shrink-0">
               <Suspense fallback={<LocationSkeleton />}>
                 <LocationSection />
               </Suspense>
             </div>
 
-            {/* Search Bar */}
             <div className="flex-1 max-w-xl mx-1 md:mx-0">
-              <div className="relative w-full flex items-center">
-                <input
-                  type="text"
-                  placeholder="Search your products"
-                  className="w-full bg-white text-foreground rounded-full md:rounded-l md:rounded-r-none px-4 pr-10 md:pr-4 text-xs md:text-sm outline-none transition-all duration-300 ease-out placeholder:text-gray-400 h-8 md:h-9 in-[.is-scrolled]:md:h-8"
-                />
-                <button className="cursor-pointer absolute right-1 md:static md:right-auto bg-transparent md:bg-accent text-gray-500 md:text-accent-foreground px-2 md:px-4 rounded-r flex items-center justify-center transition-all duration-300 ease-out h-8 md:h-9 in-[.is-scrolled]:md:h-8">
-                  <Search className="h-4 w-4" />
-                </button>
-              </div>
+              <NavSearch />
             </div>
 
-            {/* Desktop Auth */}
             <div className="hidden md:flex items-center gap-3 shrink-0">
-              <button className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5">
+              <button
+                type="button"
+                className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5"
+              >
                 বাংলা
               </button>
 
@@ -114,34 +192,26 @@ export default async function Navbar() {
               </div>
             </div>
 
-            {/* Mobile Right Icons */}
             <div className="flex md:hidden items-center gap-1 shrink-0">
               <div className="w-6 h-6 flex items-center justify-center shrink-0">
                 <Suspense fallback={<MobileAuthSkeleton />}>
                   <MobileAuthSection />
                 </Suspense>
               </div>
-
-              <button className="text-white p-1 hover:opacity-80 transition-opacity">
-                <MoreVertical className="h-5 w-5" />
-              </button>
             </div>
           </div>
         </nav>
 
-        {/* Secondary Navigation Bar */}
         <div className="bg-white text-foreground border-b border-gray-200 hidden md:block">
           <div className="container mx-auto flex items-center justify-between px-3 md:px-6 text-xs font-bold tracking-wider transition-all duration-300 ease-out h-9 md:h-10 in-[.is-scrolled]:md:h-8.5">
-            {/* Category Dropdown */}
             <div className="hidden md:flex w-44 h-full shrink-0 items-center">
               <Suspense fallback={<CategorySkeleton />}>
-                <CategoryDropdown />
+                <CategoryDropdown categories={CATEGORIES} />
               </Suspense>
             </div>
 
-            {/* Nav Links */}
             <nav className="flex-1 md:flex-initial flex items-center justify-start md:justify-center space-x-3 md:space-x-6 overflow-x-auto no-scrollbar py-0.5 w-full max-w-full">
-              {fixedNavItems.map((item) => (
+              {FIXED_NAV_ITEMS.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
@@ -152,7 +222,6 @@ export default async function Navbar() {
               ))}
             </nav>
 
-            {/* Utility Links (Desktop Only) */}
             <div className="hidden md:flex items-center space-x-4 text-muted-foreground font-normal shrink-0 border-l border-border pl-4">
               <Link
                 href="/outlets"
