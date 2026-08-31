@@ -5,6 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Sans font fallback configuration including Hind Siliguri for Bengali support */
+  --font-sans:
+    var(--font-hind-siliguri), var(--font-gilroy), system-ui, sans-serif;
+  --font-great-vibes: var(--font-great-vibes), cursive;
+  --font-playfair: var(--font-playfair), serif;
+
   /* Layout & Surface Tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -83,10 +89,8 @@
   --description: oklch(0.48 0.015 264);
   --caption: oklch(0.62 0.01 264);
 
-  /* Primary Theme Color (Change this hue to change overall theme) */
-  --primary: oklch(
-    0.55 0.22 150
-  ); /* Emerald Green / Change hue angle for new branding */
+  /* Primary Theme Color (Emerald Green) */
+  --primary: oklch(0.55 0.22 150);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.96 0.015 264);
   --secondary-foreground: oklch(0.32 0.08 264);
@@ -167,7 +171,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased font-sans;
   }
   html {
     @apply font-sans;

@@ -1,6 +1,15 @@
+import { Great_Vibes, Hind_Siliguri, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
-import { Great_Vibes, Playfair_Display } from "next/font/google";
 
+// 1. Google Bengali Font (Hind Siliguri)
+export const hindSiliguri = Hind_Siliguri({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["bengali", "latin"],
+  variable: "--font-hind-siliguri",
+  display: "swap",
+});
+
+// 2. Local Font (Gilroy)
 export const gilroy = localFont({
   src: [
     {
@@ -38,7 +47,7 @@ export const gilroy = localFont({
   display: "swap",
 });
 
-//   (Cursive)
+// 3. (Cursive)
 export const greatVibes = Great_Vibes({
   weight: "400",
   subsets: ["latin"],
@@ -46,7 +55,7 @@ export const greatVibes = Great_Vibes({
   display: "swap",
 });
 
-// (Serif Italic)
+// 4. (Serif Italic)
 export const playfair = Playfair_Display({
   subsets: ["latin"],
   style: ["italic"],
