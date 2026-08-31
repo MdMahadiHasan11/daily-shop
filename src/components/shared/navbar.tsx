@@ -20,8 +20,9 @@ import {
 
 import MobileMenu from "./mobile-menu";
 import { MobileAuthSection, MobileAuthSkeleton } from "./MobileAuthSection";
+import NavbarScrollWrapper from "./navbar-scroll-wrapper";
 
-export default function Navbar() {
+export default async function Navbar() {
   const fixedNavItems = [
     { href: "/summer-fest", label: "SUMMER FEST" },
     { href: "/great-deals", label: "GREAT DEALS" },
@@ -55,21 +56,26 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main Navbar Wrapper */}
-      <div className="sticky top-0 z-50 w-full bg-background">
-        <nav className="bg-primary text-primary-foreground py-2.5">
+      {/* Client Scroll Wrapper wraps Server Content */}
+      <NavbarScrollWrapper>
+        {/* Main Nav Bar */}
+        <nav className="bg-primary text-primary-foreground py-2.5 md:py-3.5 transition-all duration-300 ease-out in-[.is-scrolled]:md:py-2">
           <div className="container mx-auto flex items-center justify-between px-3 md:px-6 gap-2 md:gap-4">
             {/* Mobile Menu & Logo */}
             <div className="flex items-center gap-2 shrink-0">
               <MobileMenu navItems={fixedNavItems} />
 
               <Link href="/" className="flex items-center space-x-1.5 shrink-0">
-                <div className="rounded bg-white text-primary flex items-center justify-center h-8 w-8 md:h-9 md:w-9">
-                  <ShoppingBag className="h-4 w-4 md:h-5 md:w-5" />
+                <div className="h-8 w-8 md:h-10 md:w-10 rounded bg-white text-primary flex items-center justify-center transition-all duration-300 ease-out">
+                  <ShoppingBag className="h-4 w-4 md:h-5 md:w-5 transition-all duration-300 ease-out in-[.is-scrolled]:md:h-4.5 in-[.is-scrolled]:md:w-4.5" />
                 </div>
-                <div className="hidden md:flex items-center font-bold tracking-tight text-white">
-                  <span className="text-xl">Daily</span>
-                  <span className="text-accent text-xl">Shop</span>
+                <div className="hidden md:flex items-center font-bold tracking-tight text-white select-none">
+                  <span className="text-xl transition-all duration-300 ease-out in-[.is-scrolled]:md:text-lg">
+                    Daily
+                  </span>
+                  <span className="text-accent text-xl transition-all duration-300 ease-out in-[.is-scrolled]:md:text-lg">
+                    Shop
+                  </span>
                 </div>
               </Link>
             </div>
@@ -87,9 +93,9 @@ export default function Navbar() {
                 <input
                   type="text"
                   placeholder="Search your products"
-                  className="w-full bg-white text-foreground rounded-full md:rounded-l md:rounded-r-none px-4 pr-10 md:pr-4 text-xs md:text-sm outline-none h-8 md:h-9 placeholder:text-gray-400"
+                  className="w-full bg-white text-foreground rounded-full md:rounded-l md:rounded-r-none px-4 pr-10 md:pr-4 text-xs md:text-sm outline-none transition-all duration-300 ease-out placeholder:text-gray-400 h-8 md:h-9 in-[.is-scrolled]:md:h-8"
                 />
-                <button className="cursor-pointer absolute right-1 md:static md:right-auto bg-transparent md:bg-accent text-gray-500 md:text-accent-foreground px-2 md:px-4 rounded-r flex items-center justify-center h-8 md:h-9">
+                <button className="cursor-pointer absolute right-1 md:static md:right-auto bg-transparent md:bg-accent text-gray-500 md:text-accent-foreground px-2 md:px-4 rounded-r flex items-center justify-center transition-all duration-300 ease-out h-8 md:h-9 in-[.is-scrolled]:md:h-8">
                   <Search className="h-4 w-4" />
                 </button>
               </div>
@@ -97,7 +103,7 @@ export default function Navbar() {
 
             {/* Desktop Auth */}
             <div className="hidden md:flex items-center gap-3 shrink-0">
-              <button className="cursor-pointer text-xs font-semibold px-2.5 py-1 border border-white/40 rounded text-white hover:bg-white/10 transition-colors h-9">
+              <button className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5">
                 বাংলা
               </button>
 
@@ -124,9 +130,9 @@ export default function Navbar() {
         </nav>
 
         {/* Secondary Navigation Bar */}
-        <div className="bg-white text-foreground border-b border-gray-200">
-          <div className="container mx-auto flex items-center justify-between px-3 md:px-6 h-10 text-xs font-bold tracking-wider">
-            {/* Category Dropdown (Desktop Only) */}
+        <div className="bg-white text-foreground border-b border-gray-200 hidden md:block">
+          <div className="container mx-auto flex items-center justify-between px-3 md:px-6 text-xs font-bold tracking-wider transition-all duration-300 ease-out h-9 md:h-10 in-[.is-scrolled]:md:h-8.5">
+            {/* Category Dropdown */}
             <div className="hidden md:flex w-44 h-full shrink-0 items-center">
               <Suspense fallback={<CategorySkeleton />}>
                 <CategoryDropdown />
@@ -134,7 +140,7 @@ export default function Navbar() {
             </div>
 
             {/* Nav Links */}
-            <nav className="flex-1 md:flex-initial flex items-center justify-start md:justify-center space-x-3 md:space-x-6 overflow-x-auto no-scrollbar py-1 w-full max-w-full">
+            <nav className="flex-1 md:flex-initial flex items-center justify-start md:justify-center space-x-3 md:space-x-6 overflow-x-auto no-scrollbar py-0.5 w-full max-w-full">
               {fixedNavItems.map((item) => (
                 <Link
                   key={item.label}
@@ -165,7 +171,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </div>
+      </NavbarScrollWrapper>
     </>
   );
 }
