@@ -6,5 +6,52 @@
   },
   "Header": {
     "title": "डेली शॉप"
+  },
+  "Navbar": {
+    "location": "अपना डिलीवरी स्थान चुनें",
+    "category": "श्रेणी के अनुसार खरीदारी करें",
+    "help": "हेल्पलाइन",
+    "outlet": "हमारे आउटलेट",
+    "auth": "साइन इन / साइन अप",
+    "searchPlaceholder": "अपने उत्पाद खोजें..."
+  },
+  "Features": {
+    "fastDeliveryTitle": "60 मिनट में डिलीवरी",
+    "fastDeliverySub": "1500Tk से अधिक पर मुफ़्त शिपिंग",
+    "authorizedTitle": "अधिकृत उत्पाद",
+    "authorizedSub": "एक्सचेंज के लिए 30 दिनों के भीतर",
+    "supportTitle": "ग्राहक सेवा सहायता",
+    "supportSub": "सुबह 8 बजे से रात 10 बजे तक",
+    "paymentTitle": "लचीला भुगतान",
+    "paymentSub": "कई क्रेडिट कार्ड से भुगतान करें"
+  },
+  "ProductCard": {
+    "title": "आपके लिए अनुशंसित",
+    "deliveryTime": "डिलीवरी {time} {unit}",
+    "hours": "घंटे",
+    "days": "दिन",
+    "weeks": "सप्ताह",
+    "months": "महीने",
+    "addToBag": "कार्ट में जोड़ें",
+    "inBag": "{qty}{unit} कार्ट में है",
+    "perUnit": "प्रति {unit}",
+    "minLimit": "न्यूनतम {qty}",
+    "off": "छूट"
+  },
+  "WeekDay": {
+    "title": "सप्ताह के खास ऑफ़र!!!",
+    "days": "दिन",
+    "hours": "घंटे",
+    "minutes": "मिनट",
+    "seconds": "सेकंड",
+    "remaining": "शेष"
+  },
+  "Refresh": {
+    "title": "हिमालय के साथ तरोताज़ा रहें",
+    "days": "दिन",
+    "hours": "घंटे",
+    "minutes": "मिनट",
+    "seconds": "सेकंड",
+    "remaining": "बाकी"
   }
 }

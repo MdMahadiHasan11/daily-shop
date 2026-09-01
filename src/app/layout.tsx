@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "Daily Shop | Shop",
   description: "Find here cheap product",
   keywords: "good product",
+  other: {
+    google: "notranslate",
+  },
 };
 
 export default async function RootLayout({
@@ -24,12 +27,18 @@ export default async function RootLayout({
 
   return (
     <html
-      lang={locale}
-      className={`${hindSiliguri.variable} ${gilroy.variable} ${greatVibes.variable} ${playfair.variable}`}
+      lang={locale || "en"}
+      translate="no"
+      className={`notranslate ${hindSiliguri.variable} ${gilroy.variable} ${greatVibes.variable} ${playfair.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <meta name="google" content="notranslate" />
+        <meta name="googlebot" content="notranslate" />
+      </head>
       <body
-        className="min-h-full flex flex-col font-sans"
+        className="notranslate min-h-full flex flex-col font-sans"
+        translate="no"
         suppressHydrationWarning
       >
         <NextIntlClientProvider messages={messages}>

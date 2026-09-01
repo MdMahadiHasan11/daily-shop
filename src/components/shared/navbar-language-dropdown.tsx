@@ -1,18 +1,15 @@
 "use client";
 
+import { LOCALES } from "@/data/language";
 import { setLocaleAction } from "@/services/auth/language/locale";
 import { ChevronDown, Languages } from "lucide-react";
 import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-
-const LOCALES = [
-  { code: "en", label: "English" },
-  { code: "bn", label: "বাংলা" },
-  { code: "hi", label: "हिंदी" },
-] as const;
 
 export function NavbarLanguageDropdown() {
   const currentLocale = useLocale();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const activeLocale =
@@ -22,8 +19,11 @@ export function NavbarLanguageDropdown() {
     if (newLocale === currentLocale || isPending) return;
 
     startTransition(async () => {
+      // 1. Server Action সম্পন্ন হবে (Cookies/Session সেট হবে)
       await setLocaleAction(newLocale);
-      window.location.reload();
+
+      // 2. Client Side-এ কানেকশন না কেটে নিরাপদে Server Component রিলোড হবে
+      router.refresh();
     });
   };
 
@@ -41,8 +41,8 @@ export function NavbarLanguageDropdown() {
       </button>
 
       {/* Hover Dropdown Menu */}
-      <div className="absolute right-0 top-full pt-1.5 hidden group-hover:block z-50 min-w-[120px]">
-        <div className="bg-white dark:bg-gray-950 border border-border rounded-md shadow-lg py-1 text-xs text-foreground overflow-hidden">
+      <div className="absolute right-0 top-full pt-1.5 hidden group-hover:block z-50 min-w-30">
+        <div className="bg-white dark:bg-gray-950 border border-border rounded shadow-lg py-1 text-xs text-foreground overflow-hidden">
           {LOCALES.map((loc) => {
             const isActive = currentLocale === loc.code;
             return (

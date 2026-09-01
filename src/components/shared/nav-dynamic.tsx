@@ -2,11 +2,11 @@
 
 import { NavCategoryItem } from "@/types";
 import { ChevronDown, ChevronRight, Menu } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DynamicIcon } from "../icon-helper";
- 
 
 export function LocationSkeleton() {
   return (
@@ -35,7 +35,7 @@ function CategoryItemRow({ item }: { item: NavCategoryItem }) {
     >
       <Link
         href={item.href}
-        className={`flex items-center justify-between px-4 py-2 text-xs sm:text-sm transition-colors font-medium ${
+        className={`flex items-center justify-between px-4 py-3 text-sm md:text-base transition-colors font-medium ${
           isHovered ? "bg-gray-50 text-primary" : "text-gray-700"
         }`}
       >
@@ -98,7 +98,7 @@ export function CategoryDropdown({
 
   // Open by default ONLY on home page when not scrolled, OR when hovered on any page
   const isOpen = (isHomePage && !isScrolled) || isHovered;
-
+  const t = useTranslations("Navbar");
   return (
     <div
       className="relative h-full flex items-center"
@@ -107,7 +107,7 @@ export function CategoryDropdown({
     >
       <div className="flex items-center gap-2 text-foreground transition-colors pr-4 border-r border-border h-full whitespace-nowrap cursor-pointer">
         <Menu className="h-4 w-4 shrink-0" />
-        <span>SHOP BY CATEGORY</span>
+        <span>{t("category")}</span>
         <ChevronDown
           className={`h-3 w-3 shrink-0 transition-transform duration-200 ${
             isOpen ? "rotate-180" : "rotate-0"
@@ -116,7 +116,9 @@ export function CategoryDropdown({
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 w-64 bg-white border border-gray-200 shadow-xl rounded-b-md z-50 py-1.5">
+        <div
+          className={`absolute top-full left-0 w-64 bg-white  border-gray-200 border rounded-b z-50 py-2.5 ${isOpen ? "" : " shadow-xl"} `}
+        >
           {categories.map((cat) => (
             <CategoryItemRow key={cat.label} item={cat} />
           ))}

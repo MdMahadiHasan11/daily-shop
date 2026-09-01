@@ -13,34 +13,36 @@ export default function SectionHeader({
   subtitle,
   description,
   children,
-  className = "pb-10",
+  className = "pb-6 md:pb-8",
 }: SectionHeaderProps) {
   return (
-    <div
-      className={`flex flex-col gap-1 w-full items-start text-left  ${className}`}
-    >
+    <div className={`flex w-full flex-col items-start text-left ${className}`}>
       {subtitle && (
-        <div className="font-semibold text-header tracking-wide mb-0.5 block">
+        <span className="mb-1 text-xs font-semibold uppercase tracking-wider text-subtitle">
           {subtitle}
-        </div>
+        </span>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 w-full items-end">
+      <div className="grid w-full grid-cols-1 items-end gap-4 md:grid-cols-[1fr_auto]">
         {/* Left Column: Title & Description */}
         <div className="flex flex-col gap-1.5 items-start">
-          <div className="text-3xl md:text-4xl font-bold tracking-tight leading-none text-left">
+          <h2 className="text-2xl font-bold tracking-tight text-title sm:text-3xl md:text-4xl">
             {title}
-          </div>
+          </h2>
 
           {description && (
-            <div className="text-[18px]/[28px]">{description}</div>
+            <p className="text-sm text-description sm:text-base md:text-lg">
+              {description}
+            </p>
           )}
         </div>
 
-        {/* Right Column: Children anchored to the bottom */}
-        <div className="shrink-0 flex items-end justify-start md:justify-end">
-          {children}
-        </div>
+        {/* Right Column: Action elements (e.g., View All button, Tabs) */}
+        {children && (
+          <div className="flex shrink-0 items-end justify-start md:justify-end">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,5 +6,52 @@
   },
   "Header": {
     "title": "Daily Shop"
+  },
+  "Navbar": {
+    "location": "Select your delivery location",
+    "category": "SHOP BY CATEGORY",
+    "help": "Help line",
+    "outlet": "Our outlets",
+    "auth": "Sign in / Sign up",
+    "searchPlaceholder": "Search your products..."
+  },
+  "Features": {
+    "fastDeliveryTitle": "60 Mins Delivery",
+    "fastDeliverySub": "Free shipping over 1500Tk",
+    "authorizedTitle": "Authorized Products",
+    "authorizedSub": "within 30 days for an exchange",
+    "supportTitle": "Customer Service Support",
+    "supportSub": "8am to 10pm",
+    "paymentTitle": "Flexible Payments",
+    "paymentSub": "Pay with multiple credit cards"
+  },
+  "ProductCard": {
+    "title": "Recommended for you",
+    "deliveryTime": "Delivery {time} {unit}",
+    "hours": "hours",
+    "days": "days",
+    "weeks": "weeks",
+    "months": "months",
+    "addToBag": "Add to Bag",
+    "inBag": "{qty}{unit} in Bag",
+    "perUnit": "Per {unit}",
+    "minLimit": "Min. {qty}",
+    "off": "OFF"
+  },
+  "WeekDay": {
+    "title": "Weekday Deals!!!",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs",
+    "remaining": "Left"
+  },
+  "Refresh": {
+    "title": "Refresh with Himalaya",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs",
+    "remaining": "Left"
   }
 }

@@ -2,10 +2,11 @@ import { ChevronRight, HelpCircle, ShoppingBag, Store } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { NavCategoryItem } from "@/types";
 import { MobileAuthSection, MobileAuthSkeleton } from "./MobileAuthSection";
 import MobileMenu from "./mobile-menu";
 
+import { CATEGORIES, FIXED_NAV_ITEMS } from "@/data/navbar-category";
+import { getTranslations } from "next-intl/server";
 import {
   AuthSkeleton,
   CategoryDropdown,
@@ -17,113 +18,8 @@ import { AuthSection, LocationSection } from "./nav-server-sections";
 import { NavbarLanguageDropdown } from "./navbar-language-dropdown";
 import NavbarScrollWrapper from "./navbar-scroll-wrapper";
 
-export const FIXED_NAV_ITEMS = [
-  { href: "/summer-fest", label: "SUMMER FEST" },
-  { href: "/great-deals", label: "GREAT DEALS" },
-  { href: "/unilever", label: "UNILEVER-STOCK & SAVE" },
-  { href: "/buy-save", label: "BUY & SAVE MORE" },
-  { href: "/our-brands", label: "OUR BRANDS" },
-  { href: "/womens-corner", label: "WOMEN'S CORNER" },
-];
-
-export const CATEGORIES: NavCategoryItem[] = [
-  {
-    label: "Food",
-    href: "/category/food",
-    iconName: "UtensilsCrossed",
-    subcategories: [
-      {
-        label: "Cooking Essentials",
-        href: "/category/food/cooking-essentials",
-        subcategories: [
-          {
-            label: "Oil & Ghee",
-            href: "/category/food/cooking-essentials/oil-ghee",
-            subcategories: [
-              {
-                label: "Mustard Oil",
-                href: "/category/food/cooking-essentials/oil-ghee/mustard",
-              },
-              {
-                label: "Soybean Oil",
-                href: "/category/food/cooking-essentials/oil-ghee/soybean",
-              },
-            ],
-          },
-          {
-            label: "Rice & Flour",
-            href: "/category/food/cooking-essentials/rice-flour",
-          },
-          {
-            label: "Spices & Salt",
-            href: "/category/food/cooking-essentials/spices",
-          },
-        ],
-      },
-      {
-        label: "Fruits & Vegetables",
-        href: "/category/food/fruits-vegetables",
-        subcategories: [
-          {
-            label: "Fresh Fruits",
-            href: "/category/food/fruits-vegetables/fresh-fruits",
-          },
-          {
-            label: "Fresh Vegetables",
-            href: "/category/food/fruits-vegetables/fresh-vegetables",
-          },
-        ],
-      },
-      { label: "Meat & Fish", href: "/category/food/meat-fish" },
-      { label: "Snacks & Biscuits", href: "/category/food/snacks" },
-    ],
-  },
-  {
-    label: "Baby Food & Care",
-    href: "/category/baby-care",
-    iconName: "Baby",
-    subcategories: [
-      {
-        label: "Baby Formula",
-        href: "/category/baby-care/formula",
-        subcategories: [
-          {
-            label: "Stage 1 (0-6M)",
-            href: "/category/baby-care/formula/stage-1",
-          },
-          {
-            label: "Stage 2 (6-12M)",
-            href: "/category/baby-care/formula/stage-2",
-          },
-        ],
-      },
-      { label: "Baby Wipes", href: "/category/baby-care/wipes" },
-    ],
-  },
-  { label: "Diapers", href: "/category/diapers", iconName: "Sparkles" },
-  { label: "Home Cleaning", href: "/category/home-cleaning", iconName: "Home" },
-  { label: "Pet Care", href: "/category/pet-care", iconName: "HeartPulse" },
-  {
-    label: "Beauty & Health",
-    href: "/category/beauty-health",
-    iconName: "HeartPulse",
-  },
-  {
-    label: "Fashion & Lifestyle",
-    href: "/category/fashion",
-    iconName: "Shirt",
-  },
-  { label: "Home & Kitchen", href: "/category/home-kitchen", iconName: "Home" },
-  { label: "Stationeries", href: "/category/stationeries", iconName: "Pencil" },
-  {
-    label: "Toys & Sports",
-    href: "/category/toys-sports",
-    iconName: "Dumbbell",
-  },
-  { label: "Gadget", href: "/category/gadget", iconName: "Computer" },
-];
-
 export default async function Navbar() {
+  const t = await getTranslations("Navbar");
   return (
     <>
       <div className="bg-[#FFE01B] text-black md:hidden py-1.5 px-4 border-b border-black/5 relative z-40">
@@ -224,14 +120,14 @@ export default async function Navbar() {
                 className="flex items-center gap-1 hover:text-primary transition-colors whitespace-nowrap"
               >
                 <Store className="h-3.5 w-3.5" />
-                <span>Our outlets</span>
+                <span>{t("outlet")}</span>
               </Link>
               <Link
                 href="/help"
                 className="flex items-center gap-1 hover:text-primary transition-colors whitespace-nowrap"
               >
                 <HelpCircle className="h-3.5 w-3.5" />
-                <span>Help line</span>
+                <span>{t("help")}</span>
               </Link>
             </div>
           </div>

@@ -1,18 +1,19 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export function NavSearch() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
-
+  const t = useTranslations("Navbar");
   return (
     <form className="relative w-full flex items-center" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Search your products"
+        placeholder={t("searchPlaceholder")}
         className="w-full bg-white text-foreground rounded-full md:rounded-l md:rounded-r-none px-4 pr-10 md:pr-4 text-xs md:text-sm outline-none transition-all duration-300 ease-out placeholder:text-gray-400 h-8 md:h-9 in-[.is-scrolled]:md:h-8"
       />
       <button

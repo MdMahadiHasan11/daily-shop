@@ -24,7 +24,6 @@ export default function HeroAdCarousel({
         showNavigation={true}
         showPagination={false}
         disabledNavStyle="disabled"
-        btnSize={{ bg: 10, svg: 5 }}
         cols={{ mobile: 1, md: 1, lg: 1, xl: 1 }}
         renderItem={(offer) => (
           <div>
@@ -39,7 +38,6 @@ export default function HeroAdCarousel({
                     alt={offer.title}
                     fill
                     sizes="100vw"
-                    quality={90}
                     className="object-cover w-full h-full transition-transform duration-500"
                     priority
                   />

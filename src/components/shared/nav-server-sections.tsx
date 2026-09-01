@@ -1,10 +1,11 @@
 import { LayoutDashboard, User } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
 export async function LocationSection() {
-  const location = "Select your delivery location";
+  const t = await getTranslations("Navbar");
 
   return (
     <button
@@ -18,7 +19,7 @@ export async function LocationSection() {
         height={16}
         className="h-4 w-4 shrink-0 object-contain"
       />
-      <span className="truncate">{location}</span>
+      <span className="truncate">{t("location")}</span>
     </button>
   );
 }
@@ -40,7 +41,7 @@ export async function AuthSection() {
       </Link>
     );
   }
-
+  const t = await getTranslations("Navbar");
   return (
     <Link href="/login" className="block w-full">
       <Button
@@ -48,7 +49,7 @@ export async function AuthSection() {
         className="rounded w-full gap-2 bg-transparent text-white border-white/40 hover:bg-white hover:text-primary text-xs font-semibold transition-all duration-300 h-9 in-[.is-scrolled]:h-7 whitespace-nowrap"
       >
         <User className="h-4 w-4 shrink-0" />
-        <span>Sign in / Sign up</span>
+        <span>{t("auth")}</span>
       </Button>
     </Link>
   );
