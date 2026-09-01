@@ -1,20 +1,13 @@
 import Navbar from "@/components/shared/navbar";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
-type Props = {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-};
-
-// Dynamic i18n Metadata (Supports English, Bengali & Hindi)
-export async function generateMetadata({ params }: Props) {
-  const { locale } = await params;
+export async function generateMetadata() {
+  const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
     title: t("title"),
     description: t("description"),
-    generator: "v0.app",
     keywords: t("keywords"),
     authors: [{ name: "Daily Shop" }],
     openGraph: {

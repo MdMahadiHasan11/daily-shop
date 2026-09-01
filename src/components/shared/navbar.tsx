@@ -14,6 +14,7 @@ import {
 } from "./nav-dynamic";
 import { NavSearch } from "./nav-search";
 import { AuthSection, LocationSection } from "./nav-server-sections";
+import { NavbarLanguageDropdown } from "./navbar-language-dropdown";
 import NavbarScrollWrapper from "./navbar-scroll-wrapper";
 
 export const FIXED_NAV_ITEMS = [
@@ -178,12 +179,7 @@ export default async function Navbar() {
             </div>
 
             <div className="hidden md:flex items-center gap-3 shrink-0">
-              <button
-                type="button"
-                className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5"
-              >
-                বাংলা
-              </button>
+              <NavbarLanguageDropdown />
 
               <div className="w-36 shrink-0">
                 <Suspense fallback={<AuthSkeleton />}>
