@@ -53,5 +53,71 @@
     "minutes": "मिनट",
     "seconds": "सेकंड",
     "remaining": "बाकी"
+  },
+  "HotTrending": {
+    "title": "अभी हॉट और ट्रेंडिंग",
+    "days": "दिन",
+    "hours": "घंटे",
+    "minutes": "मिनट",
+    "seconds": "सेकंड",
+    "remaining": "बाकी"
+  },
+  "FeaturedFinds": {
+    "title": "आज के चुनिंदा प्रोडक्ट्स"
+  },
+  "HappyHour": {
+    "title": "हैप्पी आवर!!!",
+    "days": "दिन",
+    "hours": "घंटे",
+    "minutes": "मिनट",
+    "seconds": "सेकंड",
+    "remaining": "शेष"
+  },
+  "BodySpray": {
+    "title": "बॉडी स्प्रे और परफ्यूम"
+  },
+  "CoverageArea": {
+    "title": "डेली शॉप सेवा क्षेत्र"
+  },
+  "Footer": {
+    "title": "Daily Shop",
+    "description": "Daily Shop पर किफायती कीमतों और भरोसे کے ساتھ اپنی روزمرہ کی تمام ضروریات کے لیے بہترین مصنوعات ایک ہی جگہ پر حاصل کریں۔",
+    "address": "دھنمنڈی، ڈھاکہ-۱۲موه۹، بنگلہ دیش",
+    "phone": "+88 01700 123456",
+    "email": "support@dailyshop.com",
+    "features": {
+      "deliveryTitle": "तेज़ होम डिलीवरी",
+      "deliveryDesc": "पूरे देश में सबसे तेज़ डिलीवरी",
+      "originalTitle": "100% ओरिजिनल उत्पाद",
+      "originalDesc": "गुणवत्ता के साथ कोई समझौता नहीं",
+      "supportTitle": "24/7 ग्राहक सहायता",
+      "supportDesc": "हम किसी भी समय आपकी मदद के लिए यहाँ हैं",
+      "paymentTitle": "सुरक्षित भुगतान",
+      "paymentDesc": "bKash, Nagad, कार्ड और COD"
+    },
+    "linksSection": {
+      "quickLinks": "त्वरित लिंक",
+      "aboutUs": "हमारे बारे में",
+      "allProducts": "सभी उत्पाद",
+      "offers": "चल रहे ऑफर",
+      "blogs": "ब्लॉग और टिप्स",
+      "contact": "संपर्क करें"
+    },
+    "careSection": {
+      "customerCare": "ग्राहक सेवा",
+      "faq": "अक्सर पूछे जाने वाले सवाल (FAQ)",
+      "privacyPolicy": "गोपनीयता नीति",
+      "terms": "नियम और शर्तें",
+      "returnPolicy": "वापसी और रिफंड नीति",
+      "trackOrder": "ऑर्डर ट्रैक करें"
+    },
+    "newsletter": {
+      "title": "न्यूज़लेटर",
+      "desc": "नए ऑफ़र और छूट की अपडेट सबसे पहले पाने के लिए सब्सक्राइब करें।",
+      "placeholder": "अपना ईमेल दर्ज करें..."
+    },
+    "socialTitle": "हमसे जुड़े रहें",
+    "paymentPartner": "भुगतान पार्टनर:",
+    "rights": "सर्वाधिकार सुरक्षित।"
   }
 }

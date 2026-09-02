@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient Matching the Image -->
+    <linearGradient id="bannerBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fdfdfd" />
+      <stop offset="100%" stop-color="#f1f3f5" />
+    </linearGradient>
+
+    <!-- Pin Gradient 1 (Pink/Red) -->
+    <linearGradient id="pinGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff3366" />
+      <stop offset="100%" stop-color="#e60039" />
+    </linearGradient>
+
+    <!-- Pin Gradient 2 (Purple/Blue) -->
+    <linearGradient id="pinGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b033ff" />
+      <stop offset="100%" stop-color="#6611ff" />
+    </linearGradient>
+
+    <!-- Curved Dotted Map Pattern -->
+    <pattern id="dotGrid" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#adb5bd" opacity="0.6" />
+    </pattern>
+  </defs>
+
+  <!-- Banner Background Container -->
+  <rect width="800" height="200" rx="12" fill="url(#bannerBg)" stroke="#dee2e6" stroke-width="1.5" />
+
+  <!-- Dotted Curved World Map Simulation -->
+  <g transform="translate(0, -30)">
+    <path d="M 0 100 Q 400 30 800 100 L 800 230 Q 400 160 0 230 Z" fill="url(#dotGrid)" />
+  </g>
+
+  <!-- ==================== LEFT PIN (DS 1) ==================== -->
+  <g transform="translate(100, 45)">
+    <!-- Shadow Effect -->
+    <ellipse cx="6" cy="75" rx="8" ry="3" fill="#000000" opacity="0.2" />
+    <!-- Pin Shape -->
+    <path d="M 6 72 C 6 72 -22 42 -22 24 C -22 10 -11 -1 3 -1 C 17 -1 28 10 28 24 C 28 42 6 72 6 72 Z" fill="url(#pinGrad1)" stroke="#ffffff" stroke-width="2" />
+    <!-- Inner Circle -->
+    <circle cx="3" cy="23" r="16" fill="#ffffff" />
+    <circle cx="3" cy="23" r="14" fill="#e60039" />
+    <!-- Text inside Pin -->
+    <text x="3" y="27" font-family="sans-serif" font-size="12" font-weight="900" fill="#ffffff" text-anchor="middle">DS</text>
+  </g>
+
+  <!-- ==================== CENTER PIN (Daily Shop) ==================== -->
+  <g transform="translate(400, 75)">
+    <ellipse cx="6" cy="75" rx="8" ry="3" fill="#000000" opacity="0.2" />
+    <path d="M 6 72 C 6 72 -22 42 -22 24 C -22 10 -11 -1 3 -1 C 17 -1 28 10 28 24 C 28 42 6 72 6 72 Z" fill="url(#pinGrad1)" stroke="#ffffff" stroke-width="2" />
+    <circle cx="3" cy="23" r="16" fill="#ffffff" />
+    <circle cx="3" cy="23" r="14" fill="#e60039" />
+    <!-- Daily Shop Text (Stacked) -->
+    <text x="3" y="20" font-family="sans-serif" font-size="8" font-weight="900" fill="#ffffff" text-anchor="middle">DAILY</text>
+    <text x="3" y="29" font-family="sans-serif" font-size="8" font-weight="900" fill="#ffffff" text-anchor="middle">SHOP</text>
+  </g>
+
+  <!-- ==================== RIGHT PIN (DS 2) ==================== -->
+  <g transform="translate(640, 15)">
+    <ellipse cx="6" cy="75" rx="8" ry="3" fill="#000000" opacity="0.2" />
+    <path d="M 6 72 C 6 72 -22 42 -22 24 C -22 10 -11 -1 3 -1 C 17 -1 28 10 28 24 C 28 42 6 72 6 72 Z" fill="url(#pinGrad2)" stroke="#ffffff" stroke-width="2" />
+    <circle cx="3" cy="23" r="16" fill="#ffffff" />
+    <circle cx="3" cy="23" r="14" fill="#7011ff" />
+    <text x="3" y="27" font-family="sans-serif" font-size="12" font-weight="900" fill="#ffffff" text-anchor="middle">DS</text>
+  </g>
+
+</svg>

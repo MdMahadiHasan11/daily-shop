@@ -47,11 +47,77 @@
     "remaining": "বাকি"
   },
   "Refresh": {
-  "title": "হিমালয়ের সাথে সতেজ থাকুন",
-  "days": "দিন",
-  "hours": "ঘণ্টা",
-  "minutes": "মিনিট",
-  "seconds": "সেকেন্ড",
-  "remaining": "বাকি"
-}
+    "title": "হিমালয়ের সাথে সতেজ থাকুন",
+    "days": "দিন",
+    "hours": "ঘণ্টা",
+    "minutes": "মিনিট",
+    "seconds": "সেকেন্ড",
+    "remaining": "বাকি"
+  },
+  "HotTrending": {
+    "title": "এখনই হট ও ট্রেন্ডিং",
+    "days": "দিন",
+    "hours": "ঘণ্টা",
+    "minutes": "মিনিট",
+    "seconds": "সেকেন্ড",
+    "remaining": "বাকি"
+  },
+  "FeaturedFinds": {
+    "title": "আজকের নির্বাচিত পণ্য"
+  },
+  "HappyHour": {
+    "title": "হ্যাপি আওয়ার!!!",
+    "days": "দিন",
+    "hours": "ঘণ্টা",
+    "minutes": "মিনিট",
+    "seconds": "সেকেন্ড",
+    "remaining": "বাকি"
+  },
+  "BodySpray": {
+    "title": "বডি স্প্রে ও পারফিউম"
+  },
+  "CoverageArea": {
+    "title": "ডেইলি শপের সেবার এলাকা"
+  },
+  "Footer": {
+    "title": "Daily Shop",
+    "description": "আপনার দৈনন্দিন প্রয়োজনের সব সেরা পণ্য সাশ্রয়ী মূল্যে এবং আস্থার সাথে এক ঠিকানায় পেতে Daily Shop আপনাদের সাথেই আছে।",
+    "address": "ধানমন্ডি, ঢাকা-১২০৯, বাংলাদেশ",
+    "phone": "+৮৮ ০১৭০০ ১২৩৪৫৬",
+    "email": "support@dailyshop.com",
+    "features": {
+      "deliveryTitle": "দ্রুত হোম ডেলিভারি",
+      "deliveryDesc": "সারাদেশে দ্রুততম সময়ে পৌঁছে দেওয়া হয়",
+      "originalTitle": "১০০% অরিজিনাল পণ্য",
+      "originalDesc": "গুণগত মানে কোনো আপস করা হয় না",
+      "supportTitle": "২৪/৭ কাস্টমার সাপোর্ট",
+      "supportDesc": "যেকোনো প্রয়োজনে আমরা আছি পাশে",
+      "paymentTitle": "নিরাপদ পেমেন্ট",
+      "paymentDesc": "বিকাশ, নগদ, কার্ড ও ক্যাশ অন ডেলিভারি"
+    },
+    "linksSection": {
+      "quickLinks": "দরকারী লিংক",
+      "aboutUs": "আমাদের সম্পর্কে",
+      "allProducts": "সকল পণ্য",
+      "offers": "চলমান অফার",
+      "blogs": "ব্লগ ও টিপস",
+      "contact": "যোগাযোগ করুন"
+    },
+    "careSection": {
+      "customerCare": "কাস্টমার কেয়ার",
+      "faq": "সাধারণ জিজ্ঞাসা (FAQ)",
+      "privacyPolicy": "প্রাইভেসি পলিসি",
+      "terms": "শর্তাবলী",
+      "returnPolicy": "রিটার্ন ও রিফান্ড পলিসি",
+      "trackOrder": "অর্ডার ট্র্যাকিং"
+    },
+    "newsletter": {
+      "title": "নিউজলেটার",
+      "desc": "সবার আগে নতুন অফার ও ডিসকাউন্টের আপডেট পেতে সাবস্ক্রাইব করুন।",
+      "placeholder": "আপনার ইমেইল দিন..."
+    },
+    "socialTitle": "আমাদের সাথে যুক্ত থাকুন",
+    "paymentPartner": "পেমেন্ট পার্টনার:",
+    "rights": "সর্বস্বত্ব সংরক্ষিত।"
+  }
 }

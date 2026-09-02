@@ -53,5 +53,71 @@
     "minutes": "Mins",
     "seconds": "Secs",
     "remaining": "Left"
+  },
+  "HotTrending": {
+    "title": "Hot & Trending Right Now",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs",
+    "remaining": "Left"
+  },
+  "FeaturedFinds": {
+    "title": "Today’s Featured Finds"
+  },
+  "HappyHour": {
+    "title": "Happy Hour!!!",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs",
+    "remaining": "Left"
+  },
+  "BodySpray": {
+    "title": "Body Spray & Perfume"
+  },
+  "CoverageArea": {
+    "title": "Daily Shop Coverage Area"
+  },
+  "Footer": {
+    "title": "Daily Shop",
+    "description": "Get all the best products for your daily needs at affordable prices and with trust all in one place at Daily Shop.",
+    "address": "Dhanmondi, Dhaka-1209, Bangladesh",
+    "phone": "+88 01700 123456",
+    "email": "support@dailyshop.com",
+    "features": {
+      "deliveryTitle": "Fast Home Delivery",
+      "deliveryDesc": "Fastest delivery across the country",
+      "originalTitle": "100% Original Products",
+      "originalDesc": "No compromise with quality",
+      "supportTitle": "24/7 Customer Support",
+      "supportDesc": "We are here for you anytime",
+      "paymentTitle": "Secure Payment",
+      "paymentDesc": "bKash, Nagad, Cards & COD"
+    },
+    "linksSection": {
+      "quickLinks": "Quick Links",
+      "aboutUs": "About Us",
+      "allProducts": "All Products",
+      "offers": "Ongoing Offers",
+      "blogs": "Blogs & Tips",
+      "contact": "Contact Us"
+    },
+    "careSection": {
+      "customerCare": "Customer Care",
+      "faq": "FAQ",
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms & Conditions",
+      "returnPolicy": "Return & Refund Policy",
+      "trackOrder": "Track Order"
+    },
+    "newsletter": {
+      "title": "Newsletter",
+      "desc": "Subscribe to get updates on new offers and discounts first.",
+      "placeholder": "Enter your email..."
+    },
+    "socialTitle": "Connect With Us",
+    "paymentPartner": "Payment Partner:",
+    "rights": "All rights reserved."
   }
 }

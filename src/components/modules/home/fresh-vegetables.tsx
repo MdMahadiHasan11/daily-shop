@@ -1,25 +1,24 @@
-import SectionHeader from "@/components/shared/section-header";
 import { fetchRecommendedProducts } from "@/lib/fake-api";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import RecommendedCardCarousel from "./recommended-card-carousel";
 
-interface RefreshHimalayaProps {
+interface FreshVegetablesProps {
   className?: string;
 }
 
-export default async function RefreshHimalaya({
+export default async function FreshVegetables({
   className,
-}: RefreshHimalayaProps) {
+}: FreshVegetablesProps) {
   const [recommendedData] = await Promise.all([fetchRecommendedProducts()]);
 
   const t = await getTranslations("Refresh");
   return (
     <div className={`w-full overflow-hidden ${className}`}>
-      <div className="relative w-full bg-black flex justify-center items-center">
+      <div className="relative w-full   flex justify-center items-center">
         <Image
-          src="/home/refresh-company/himalya.webp"
-          alt="Weekday Deals Banner"
+          src="/home/fresh-vegetable.webp"
+          alt="Fresh Vegetables"
           width={1920}
           height={1080}
           priority
@@ -27,7 +26,6 @@ export default async function RefreshHimalaya({
         />
       </div>
       <div className="mt-10">
-        <SectionHeader title={t("title")} />
         <RecommendedCardCarousel cards={recommendedData} className="px-4" />
       </div>
     </div>
