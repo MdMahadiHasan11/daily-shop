@@ -4,99 +4,111 @@ import FloatingInput from "@/components/shared/floating-input";
 import InputFieldError from "@/components/shared/InputFieldError";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
-import { loginUser } from "@/services/auth/login-user";
+import { handleAuthStep } from "@/services/auth/login-user"; // আপনার ফাইলের পাথ অনুযায়ী দিন
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 const LoginForm = ({ redirect }: { redirect?: string }) => {
-  const [state, formAction, isPending] = useActionState(loginUser, null);
+  const [state, formAction, isPending] = useActionState(handleAuthStep, null);
+
+  const currentStep = state?.step || "INITIATE";
 
   useEffect(() => {
     if (state && !state.success && state.message) {
       toast.error(state.message);
+    } else if (state && state.success && state.message) {
+      toast.success(state.message);
     }
   }, [state]);
 
   const handleGoogleLogin = () => {
     const backendURL = process.env.NEXT_PUBLIC_BASE_API_URL || "";
     const redirectTo = redirect || "dashboard";
-
     const targetUrl = backendURL.startsWith("http")
       ? `${backendURL}/auth/google?redirect=${redirectTo}`
       : `${window.location.origin}${backendURL}/auth/google?redirect=${redirectTo}`;
-
     window.location.href = targetUrl;
   };
-  console.log({ state });
+
   return (
     <div className="space-y-4">
-      {/* Set autoComplete="off" on the form */}
       <form action={formAction} autoComplete="off">
         {redirect && <input type="hidden" name="redirect" value={redirect} />}
+        <input type="hidden" name="step" value={currentStep} />
 
         <FieldGroup>
           <div className="grid grid-cols-1 gap-4">
-            {/* Email Field */}
-            <Field>
-              <FloatingInput
-                key={`email-${state?.data?.email ?? "default"}`}
-                id="email"
-                name="email"
-                type="email"
-                label="Email"
-                defaultValue={state?.data?.email ?? ""}
-                required
-                placeholder="Enter your email"
-                autoComplete="off"
-              />
-              <InputFieldError field="email" state={state} />
-            </Field>
+            {/* STEP 1: Phone or Email Input */}
+            {currentStep === "INITIATE" && (
+              <Field>
+                <FloatingInput
+                  id="identifier"
+                  name="identifier"
+                  type="text"
+                  label="Phone Number or Email"
+                  defaultValue={state?.identifier ?? ""}
+                  required
+                  placeholder="Enter phone or email"
+                />
+              </Field>
+            )}
 
-            {/* Password Field */}
-            <Field>
-              <FloatingInput
-                key={`password-${state?.data?.password ?? "default"}`}
-                id="password"
-                name="password"
-                label="Password"
-                defaultValue={state?.data?.password ?? ""}
-                isPassword
-                required
-                placeholder="Enter password"
-                autoComplete="new-password"
-              />
-              <InputFieldError field="password" state={state} />
-            </Field>
+            {/* STEP 2: OTP Input */}
+            {currentStep === "VERIFY" && (
+              <>
+                <input
+                  type="hidden"
+                  name="identifier"
+                  value={state?.identifier || ""}
+                />
+                <div className="text-sm text-gray-500 mb-2">
+                  OTP sent to: <span className="font-semibold">{state?.identifier}</span>
+                </div>
+                <Field>
+                  <FloatingInput
+                    id="otp"
+                    name="otp"
+                    type="text"
+                    label="Enter 6-digit OTP"
+                    required
+                    maxLength={6}
+                    placeholder="Enter OTP"
+                  />
+                </Field>
+              </>
+            )}
           </div>
 
-          <FieldGroup className="">
+          <FieldGroup className="mt-4">
             <Field>
               <Button
                 type="submit"
                 disabled={isPending}
                 className="w-full rounded-sm py-5"
               >
-                {isPending ? "Logging in..." : "Login"}
+                {isPending
+                  ? "Processing..."
+                  : currentStep === "INITIATE"
+                  ? "Get OTP"
+                  : "Verify & Login"}
               </Button>
+
+              {currentStep === "VERIFY" && (
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="w-full text-center text-sm text-blue-600 hover:underline mt-2"
+                >
+                  Change Phone/Email
+                </button>
+              )}
 
               <FieldDescription className="mt-3 px-6 text-center">
                 Don&apos;t have an account?{" "}
-                <Link
-                  href="/register"
-                  className="text-blue-600 hover:underline"
-                >
+                <Link href="/register" className="text-blue-600 hover:underline">
                   Sign up
-                </Link>
-              </FieldDescription>
-
-              <FieldDescription className="px-6 text-center">
-                <Link
-                  href="/forget-password"
-                  className="text-blue-600 hover:underline"
-                >
-                  Forgot password?
                 </Link>
               </FieldDescription>
             </Field>
