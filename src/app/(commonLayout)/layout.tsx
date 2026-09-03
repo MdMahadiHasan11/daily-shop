@@ -6,8 +6,13 @@ export async function generateMetadata() {
   const locale = await getLocale();
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
+  const siteTitle = t("title");
+
   return {
-    title: t("title"),
+    title: {
+      default: siteTitle,
+      template: `%s | ${siteTitle}`,
+    },
     description: t("description"),
     keywords: t("keywords"),
     authors: [{ name: "Daily Shop" }],
@@ -15,7 +20,7 @@ export async function generateMetadata() {
       google: "notranslate",
     },
     openGraph: {
-      title: t("title"),
+      title: siteTitle,
       description: t("description"),
       type: "website",
       locale: locale,

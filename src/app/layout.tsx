@@ -9,7 +9,13 @@ import { Suspense } from "react";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "Daily Shop | Shop",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  ),
+  title: {
+    default: "Daily Shop",
+    template: "%s | Daily Shop",
+  },
   description: "Find here cheap product",
   keywords: "good product",
   other: {
@@ -35,6 +41,8 @@ export default async function RootLayout({
       <head>
         <meta name="google" content="notranslate" />
         <meta name="googlebot" content="notranslate" />
+        {/* ২. ব্রাউজার ট্যাবে ফলব্যাক নিশ্চিত করার জন্য ফিক্সড টাইটেল ട্যাগ দিতে পারেন */}
+        <title>Daily Shop</title>
       </head>
       <body
         className="notranslate min-h-full flex flex-col font-sans"
