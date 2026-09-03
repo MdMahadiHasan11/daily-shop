@@ -23,6 +23,8 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
     }
   }, [state]);
 
+  console.log(state, "ssssssssssssssssssss");
+
   const handleGoogleLogin = () => {
     const backendURL = process.env.NEXT_PUBLIC_BASE_API_URL || "";
     const redirectTo = redirect || "dashboard";
@@ -44,14 +46,17 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
             {currentStep === "INITIATE" && (
               <Field>
                 <FloatingInput
+                  key={`identifier-${state?.data?.identifier ?? "default"}`}
                   id="identifier"
                   name="identifier"
                   type="text"
                   label="Phone Number or Email"
-                  defaultValue={state?.identifier ?? ""}
+                  defaultValue={state?.data?.identifier ?? ""}
                   required
                   placeholder="Enter phone or email"
+                  autoComplete="off"
                 />
+                <InputFieldError field="identifier" state={state} />
               </Field>
             )}
 
@@ -61,10 +66,13 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
                 <input
                   type="hidden"
                   name="identifier"
-                  value={state?.identifier || ""}
+                  value={state?.data?.identifier || ""}
                 />
                 <div className="text-sm text-gray-500 mb-2">
-                  OTP sent to: <span className="font-semibold">{state?.identifier}</span>
+                  OTP sent to:{" "}
+                  <span className="font-semibold">
+                    {state?.data?.identifier}
+                  </span>
                 </div>
                 <Field>
                   <FloatingInput
@@ -72,10 +80,12 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
                     name="otp"
                     type="text"
                     label="Enter 6-digit OTP"
+                    defaultValue={state?.data?.otp ?? ""}
                     required
                     maxLength={6}
                     placeholder="Enter OTP"
                   />
+                  <InputFieldError field="otp" state={state} />
                 </Field>
               </>
             )}
@@ -91,8 +101,8 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
                 {isPending
                   ? "Processing..."
                   : currentStep === "INITIATE"
-                  ? "Get OTP"
-                  : "Verify & Login"}
+                    ? "Get OTP"
+                    : "Verify & Login"}
               </Button>
 
               {currentStep === "VERIFY" && (
@@ -107,7 +117,10 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
 
               <FieldDescription className="mt-3 px-6 text-center">
                 Don&apos;t have an account?{" "}
-                <Link href="/register" className="text-blue-600 hover:underline">
+                <Link
+                  href="/register"
+                  className="text-blue-600 hover:underline"
+                >
                   Sign up
                 </Link>
               </FieldDescription>

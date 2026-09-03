@@ -2,6 +2,11 @@
 "use server";
 
 import { serverFetch } from "@/lib/server-fetch";
+import { zodValidator } from "@/lib/zod-validator";
+import {
+  loginInitiateZodSchema,
+  verifyOtpZodSchema,
+} from "@/zod/auth.validation";
 import { redirect } from "next/navigation";
 import parseSetCookie from "set-cookie-parser";
 import { setCookie } from "./token-handlers";
@@ -20,16 +25,20 @@ export const handleAuthStep = async (
     // STEP 1: Initiate Login/Register (Send OTP)
     // -------------------------------------------------------------
     if (step === "INITIATE") {
-      if (!identifier) {
+      const validationResult = zodValidator(
+        { identifier },
+        loginInitiateZodSchema,
+      );
+
+      if (validationResult.success === false) {
         return {
-          success: false,
-          message: "Phone or email is required",
-          step: "INITIATE",
+          ...validationResult,
+          data: { identifier },
         };
       }
 
-      const isEmail = identifier.includes("@");
-      const payload = isEmail ? { email: identifier } : { phone: identifier };
+      const isPhone = /^\+?\d+$/.test(identifier);
+      const payload = isPhone ? { phone: identifier } : { email: identifier };
 
       const res = await serverFetch.post("/auth/login-register-initiate", {
         body: JSON.stringify(payload),
@@ -39,19 +48,26 @@ export const handleAuthStep = async (
       const result = await res.json();
 
       if (!res.ok || !result.success) {
+        const phoneError = result.details?.find(
+          (err: any) => err.field === "body.phone",
+        );
         return {
           success: false,
-          message: result.error || result.message || "Failed to send OTP",
+          message:
+            phoneError?.message ||
+            result.error ||
+            result.message ||
+            "Failed to send OTP",
           step: "INITIATE",
-          identifier,
+          data: { identifier },
         };
       }
 
       return {
         success: true,
         message: result.data?.message || "OTP sent successfully",
-        step: "VERIFY", // সফল হলে পরবর্তী স্টেপে চলে যাবে
-        identifier,
+        step: "VERIFY",
+        data: { identifier },
       };
     }
 
@@ -59,19 +75,29 @@ export const handleAuthStep = async (
     // STEP 2: Verify OTP & Login
     // -------------------------------------------------------------
     if (step === "VERIFY") {
-      if (!identifier || !otp) {
+      const validationResult = zodValidator({ otp }, verifyOtpZodSchema);
+
+      if (validationResult.success === false) {
         return {
-          success: false,
-          message: "Identifier and OTP are required",
+          ...validationResult,
           step: "VERIFY",
-          identifier,
+          data: { identifier, otp },
         };
       }
 
-      const isEmail = identifier.includes("@");
-      const payload = isEmail
-        ? { email: identifier, otp }
-        : { phone: identifier, otp };
+      if (!identifier) {
+        return {
+          success: false,
+          message: "Missing identifier. Please provide one and try again.",
+          step: "VERIFY",
+          data: { identifier, otp },
+        };
+      }
+
+      const isPhone = /^\+?\d+$/.test(identifier);
+      const payload = isPhone
+        ? { phone: identifier, otp }
+        : { email: identifier, otp };
 
       const res = await serverFetch.post("/auth/login-register-verify", {
         body: JSON.stringify(payload),
@@ -85,13 +111,16 @@ export const handleAuthStep = async (
           success: false,
           message: result.message || "Invalid or expired OTP",
           step: "VERIFY",
-          identifier,
+          data: { identifier, otp },
         };
       }
 
       const setCookieHeaders = res.headers.getSetCookie();
+
       if (!setCookieHeaders || setCookieHeaders.length === 0) {
-        throw new Error("No Set-Cookie header found in backend response");
+        throw new Error(
+          "Server is busy right now. Please try again after some time.",
+        );
       }
 
       const parsedCookies = parseSetCookie(setCookieHeaders, { map: true });
@@ -124,7 +153,7 @@ export const handleAuthStep = async (
       if (redirectTo) {
         redirect(`${redirectTo.toString()}?loggedIn=true`);
       }
-      redirect("/dashboard?loggedIn=true");
+      redirect("/?loggedIn=true");
     }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
@@ -134,9 +163,12 @@ export const handleAuthStep = async (
     console.error("Auth Error:", error);
     return {
       success: false,
-      message: error.message || "Something went wrong",
+      message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Login Failed. You might have entered incorrect phone or email.",
       step: formData.get("step") || "INITIATE",
-      identifier,
+      data: { identifier },
     };
   }
 };

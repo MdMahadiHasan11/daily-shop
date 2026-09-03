@@ -24,18 +24,31 @@ export const registerPatientValidationZodSchema = z
     path: ["confirmPassword"],
   });
 
-export const loginValidationZodSchema = z.object({
-  email: z.email({
-    message: "Email is required",
-  }),
-  password: z
-    .string("Password is required")
-    .min(6, {
-      error: "Password is required and must be at least 6 characters long",
+const phoneRegex = /^(?:\+?880|0)?1[3-9]\d{8}$/;
+
+export const loginInitiateZodSchema = z.object({
+  identifier: z
+    .string({
+      message: "Email or phone number is required",
     })
-    .max(100, {
-      error: "Password must be at most 100 characters long",
-    }),
+    .refine(
+      (val) => {
+        const isEmail = z.string().email().safeParse(val).success;
+        const isPhone = phoneRegex.test(val);
+        return isEmail || isPhone;
+      },
+      {
+        message: "Please enter a valid email address or phone number",
+      },
+    ),
+});
+
+export const verifyOtpZodSchema = z.object({
+  otp: z
+    .string({
+      message: "OTP is required",
+    })
+    .regex(/^\d{6}$/, "OTP must be exactly 6 digits"),
 });
 
 export const resetPasswordSchema = z
@@ -67,8 +80,7 @@ export const changePasswordSchema = z
     path: ["confirmPassword"],
   });
 
-
-  export const setPasswordSchema = z
+export const setPasswordSchema = z
   .object({
     newPassword: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z

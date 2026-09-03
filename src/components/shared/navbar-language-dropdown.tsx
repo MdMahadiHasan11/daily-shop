@@ -1,7 +1,7 @@
 "use client";
 
 import { LOCALES } from "@/data/language";
-import { setLocaleAction } from "@/services/auth/language/locale";
+import { setLocaleAction } from "@/services/language/locale";
 import { ChevronDown, Languages } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -19,17 +19,14 @@ export function NavbarLanguageDropdown() {
     if (newLocale === currentLocale || isPending) return;
 
     startTransition(async () => {
-      // 1. Server Action সম্পন্ন হবে (Cookies/Session সেট হবে)
       await setLocaleAction(newLocale);
 
-      // 2. Client Side-এ কানেকশন না কেটে নিরাপদে Server Component রিলোড হবে
       router.refresh();
     });
   };
 
   return (
     <div className="relative group">
-      {/* Main Trigger Button matching original styling */}
       <button
         type="button"
         disabled={isPending}

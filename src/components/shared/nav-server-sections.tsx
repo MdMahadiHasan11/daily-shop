@@ -1,8 +1,11 @@
-import { LayoutDashboard, User } from "lucide-react";
+import { getUserInfo } from "@/services/auth/get-user-info";
+import { getCookie } from "@/services/auth/token-handlers";
+import { User } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { UserDropdown } from "./user-dropdown";
 
 export async function LocationSection() {
   const t = await getTranslations("Navbar");
@@ -25,23 +28,31 @@ export async function LocationSection() {
 }
 
 export async function AuthSection() {
-  const isLoggedIn = false;
-  const dashboardRoute = "/dashboard";
+  const t = await getTranslations("Navbar");
+  const accessToken = await getCookie("accessToken");
+  const userInfo = accessToken ? await getUserInfo() : null;
+  const isLoggedIn =
+    !!accessToken && !!userInfo && userInfo.name !== "Unknown User";
+
+  const getDashboardRoute = (role?: string) => {
+    switch (role) {
+      case "ADMIN":
+        return "/admin/dashboard";
+      case "VENDOR":
+        return "/vendor/dashboard";
+      case "MODERATOR":
+        return "/moderator/dashboard";
+      default:
+        return "/dashboard";
+    }
+  };
+
+  const dashboardRoute = getDashboardRoute(userInfo?.role);
 
   if (isLoggedIn) {
-    return (
-      <Link href={dashboardRoute} className="block w-full">
-        <Button
-          variant="outline"
-          className="w-full gap-2 bg-transparent text-white border-white/40 hover:bg-white/10 text-xs transition-all duration-300 h-9 in-[.is-scrolled]:h-7"
-        >
-          <LayoutDashboard className="h-4 w-4 shrink-0" />
-          <span>Dashboard</span>
-        </Button>
-      </Link>
-    );
+    return <UserDropdown userInfo={userInfo} dashboardRoute={dashboardRoute} />;
   }
-  const t = await getTranslations("Navbar");
+
   return (
     <Link href="/login" className="block w-full">
       <Button
