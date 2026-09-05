@@ -1,5 +1,4 @@
 import { fetchRecommendedProducts } from "@/lib/fake-api";
-import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import RecommendedCardCarousel from "./recommended-card-carousel";
 
@@ -12,7 +11,6 @@ export default async function FreshVegetables({
 }: FreshVegetablesProps) {
   const [recommendedData] = await Promise.all([fetchRecommendedProducts()]);
 
-  const t = await getTranslations("Refresh");
   return (
     <div className={`w-full overflow-hidden ${className}`}>
       <div className="relative w-full   flex justify-center items-center">

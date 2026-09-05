@@ -7,7 +7,6 @@ import MobileMenu from "./mobile-menu";
 
 import { CATEGORIES, FIXED_NAV_ITEMS } from "@/data/navbar-category";
 import { getTranslations } from "next-intl/server";
-import LogoutButton from "./logout-button";
 import {
   AuthSkeleton,
   CategoryDropdown,
@@ -67,7 +66,7 @@ export default async function Navbar() {
                 </div>
               </Link>
             </div>
-            <LogoutButton />
+
             {/* Location Section */}
             <div className="hidden xl:block w-48 shrink-0">
               <Suspense fallback={<LocationSkeleton />}>

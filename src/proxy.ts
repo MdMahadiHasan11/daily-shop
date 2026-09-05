@@ -13,6 +13,16 @@ export function proxy(request: NextRequest) {
     });
   }
 
+  // const accessToken = request.cookies.get("accessToken")?.value;
+  // const refreshToken = request.cookies.get("refreshToken")?.value;
+  // const isUserLoggedIn = !!(accessToken && refreshToken);
+
+  // const { pathname } = request.nextUrl;
+
+  // if (isUserLoggedIn && pathname.startsWith("/login")) {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
+
   return response;
 }
 

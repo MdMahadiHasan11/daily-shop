@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
+import { tags } from "@/constants";
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zod-validator";
 import {
   loginInitiateZodSchema,
+  updateProfileZodSchema,
   verifyOtpZodSchema,
 } from "@/zod/auth.validation";
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import parseSetCookie from "set-cookie-parser";
 import { setCookie } from "./token-handlers";
@@ -22,9 +25,9 @@ export const handleAuthStep = async (
 
   try {
     // -------------------------------------------------------------
-    // STEP 1: Initiate Login/Register (Send OTP)
+    // STEP 1: Initiate Login / Register & Resend OTP
     // -------------------------------------------------------------
-    if (step === "INITIATE") {
+    if (step === "INITIATE" || step === "RESEND") {
       const validationResult = zodValidator(
         { identifier },
         loginInitiateZodSchema,
@@ -34,6 +37,7 @@ export const handleAuthStep = async (
         return {
           ...validationResult,
           data: { identifier },
+          step: step === "RESEND" ? "VERIFY" : "INITIATE",
         };
       }
 
@@ -58,14 +62,14 @@ export const handleAuthStep = async (
             result.error ||
             result.message ||
             "Failed to send OTP",
-          step: "INITIATE",
+          step: step === "RESEND" ? "VERIFY" : "INITIATE",
           data: { identifier },
         };
       }
 
       return {
         success: true,
-        message: result.data?.message || "OTP sent successfully",
+        message: result.data?.message || "OTP resent successfully",
         step: "VERIFY",
         data: { identifier },
       };
@@ -149,7 +153,77 @@ export const handleAuthStep = async (
         sameSite: (refreshTokenCookie.sameSite?.toLowerCase() as any) || "none",
       });
 
+      // Check if user is a new user from response data
+      if (result.data?.isNewUser) {
+        return {
+          success: true,
+          message: "OTP verified successfully. Please complete your profile.",
+          step: "COMPLETE_PROFILE",
+          data: { identifier, user: result.data.user },
+        };
+      }
+
       // Redirect
+      if (redirectTo) {
+        redirect(`${redirectTo.toString()}?loggedIn=true`);
+      }
+      redirect("/?loggedIn=true");
+    }
+
+    if (step === "COMPLETE_PROFILE") {
+      const skipProfile = formData.get("skip") === "true";
+
+      if (!skipProfile) {
+        const id = formData.get("id") as string;
+        const firstName = formData.get("firstName") as string;
+        const lastName = formData.get("lastName") as string;
+        const genderId = formData.get("genderId") as string;
+        const dateOfBirth = formData.get("dateOfBirth") as string;
+        const bio = formData.get("bio") as string;
+
+        const profileData = {
+          firstName: firstName || undefined,
+          lastName: lastName || undefined,
+          genderId: genderId ? parseInt(genderId, 10) : undefined,
+          dateOfBirth: dateOfBirth
+            ? new Date(dateOfBirth).toISOString()
+            : undefined,
+          bio: bio || undefined,
+        };
+
+        const validationResult = zodValidator(
+          profileData,
+          updateProfileZodSchema,
+        );
+
+        if (validationResult.success === false) {
+          return {
+            ...validationResult,
+            step: "COMPLETE_PROFILE",
+            data: { id, identifier, ...profileData },
+          };
+        }
+
+        const patchRes = await serverFetch.patch(`/user/${id}`, {
+          body: JSON.stringify(profileData),
+          isPublic: false,
+        });
+        if (patchRes) {
+          revalidateTag(tags.userInfoTag, { expire: 0 });
+        }
+
+        const patchResult = await patchRes.json();
+
+        if (!patchRes.ok || !patchResult.success) {
+          return {
+            success: false,
+            message: patchResult.message || "Failed to update profile",
+            step: "COMPLETE_PROFILE",
+            data: { id, identifier, ...profileData },
+          };
+        }
+      }
+
       if (redirectTo) {
         redirect(`${redirectTo.toString()}?loggedIn=true`);
       }

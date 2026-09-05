@@ -4,7 +4,6 @@ import { User } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { UserDropdown } from "./user-dropdown";
 
 export async function LocationSection() {
@@ -55,13 +54,10 @@ export async function AuthSection() {
 
   return (
     <Link href="/login" className="block w-full">
-      <Button
-        variant="outline"
-        className="rounded w-full gap-2 bg-transparent text-white border-white/40 hover:bg-white hover:text-primary text-xs font-semibold transition-all duration-300 h-9 in-[.is-scrolled]:h-7 whitespace-nowrap"
-      >
+      <button className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center gap-1.5 disabled:opacity-50 select-none">
         <User className="h-4 w-4 shrink-0" />
         <span>{t("auth")}</span>
-      </Button>
+      </button>
     </Link>
   );
 }

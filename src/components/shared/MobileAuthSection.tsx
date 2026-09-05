@@ -24,7 +24,6 @@ export async function MobileAuthSection() {
   const dashboardRoute = getDashboardRoute(userInfo?.role);
 
   if (isLoggedIn && userInfo) {
-    // Reusing user dropdown or a simplified mobile link layout
     return <UserDropdown userInfo={userInfo} dashboardRoute={dashboardRoute} />;
   }
 

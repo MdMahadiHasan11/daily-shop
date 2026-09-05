@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   ),
   title: {
     default: "Daily Shop",
-    template: "%s | Daily Shop",
+    template: "%s",
   },
   description: "Find here cheap product",
   keywords: "good product",

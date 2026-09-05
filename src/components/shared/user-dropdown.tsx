@@ -1,13 +1,18 @@
 "use client";
 
 import { IUserInfo } from "@/services/auth/get-user-info";
+import { logoutAction } from "@/services/auth/logout-user";
 import {
+  BookOpen,
   ChevronDown,
+  FileText,
+  Gift,
+  Heart,
   LayoutDashboard,
   LogOut,
-  ShoppingBag,
   User as UserIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -19,6 +24,8 @@ interface UserDropdownProps {
 export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const t = useTranslations("UserDropdown");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,14 +49,13 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        // Adjusted padding and styling for mobile vs desktop compactness
         className="cursor-pointer text-xs font-semibold p-1.5 md:px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-7 w-7 md:h-9 md:w-auto md:py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center justify-center md:gap-1.5 disabled:opacity-50 select-none"
       >
         <UserIcon className="h-4 w-4 shrink-0" />
 
-        {/* Name: Hidden on mobile, visible from md screens upwards */}
+        {/* Name: Hidden on mobile, visible from md screens upwards + Truncated */}
         <span className="hidden md:inline truncate max-w-27.5 md:max-w-40">
-          {userInfo?.name || "Customer"}
+          {userInfo?.name || t("customer")}
         </span>
 
         {/* Chevron: Hidden on mobile, visible from md screens upwards */}
@@ -72,9 +78,9 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
           {/* Top-Right Arrow pointing up */}
           <div className="absolute -top-1.5 md:right-5 right-2 h-3 w-3 rotate-45 bg-white dark:bg-zinc-950 border-t border-l border-zinc-200 dark:border-zinc-800" />
 
-          {/* Header title */}
-          <div className="px-3 py-2 font-semibold text-sm border-b border-zinc-100 dark:border-zinc-800 mb-1 text-zinc-900 dark:text-zinc-100">
-            {userInfo?.name || "Customer"}
+          {/* Header title with truncate for long names */}
+          <div className="px-3 py-2 font-semibold text-sm border-b border-zinc-100 dark:border-zinc-800 mb-1 text-zinc-900 dark:text-zinc-100 truncate max-w-full">
+            {userInfo?.name || t("customer")}
           </div>
 
           {/* Links */}
@@ -85,29 +91,68 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
               className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-sm font-medium"
             >
               <LayoutDashboard className="mr-2.5 h-4 w-4 text-zinc-500" />
-              <span>Dashboard</span>
+              <span>{t("dashboard")}</span>
             </Link>
+
             <Link
-              href="/my-bookings"
+              href="/orders"
               onClick={() => setIsOpen(false)}
               className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-sm font-medium"
             >
-              <ShoppingBag className="mr-2.5 h-4 w-4 text-zinc-500" />
-              <span>My Bookings</span>
+              <FileText className="mr-2.5 h-4 w-4 text-zinc-500" />
+              <span>{t("orderHistory")}</span>
+            </Link>
+
+            <Link
+              href="/profile"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-sm font-medium"
+            >
+              <UserIcon className="mr-2.5 h-4 w-4 text-zinc-500" />
+              <span>{t("personalInfo")}</span>
+            </Link>
+
+            <Link
+              href="/reward-points"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-sm font-medium"
+            >
+              <Gift className="mr-2.5 h-4 w-4 text-zinc-500" />
+              <span>{t("rewardPoints")}</span>
+            </Link>
+
+            <Link
+              href="/address-book"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-sm font-medium"
+            >
+              <BookOpen className="mr-2.5 h-4 w-4 text-zinc-500" />
+              <span>{t("addressBook")}</span>
+            </Link>
+
+            <Link
+              href="/wishlist"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-sm font-medium"
+            >
+              <Heart className="mr-2.5 h-4 w-4 text-zinc-500" />
+              <span>{t("wishlist")}</span>
             </Link>
           </div>
 
           <div className="my-1 h-px bg-zinc-100 dark:bg-zinc-800" />
 
-          {/* Logout Link */}
-          <Link
-            href="/logout"
-            onClick={() => setIsOpen(false)}
-            className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors text-sm font-medium"
-          >
-            <LogOut className="mr-2.5 h-4 w-4" />
-            <span>Log out</span>
-          </Link>
+          {/* Logout Action Form / Button */}
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer flex w-full items-center px-2.5 py-2 rounded text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 transition-colors text-sm font-medium"
+            >
+              <LogOut className="mr-2.5 h-4 w-4" />
+              <span>{t("logout")}</span>
+            </button>
+          </form>
         </div>
       </div>
     </div>

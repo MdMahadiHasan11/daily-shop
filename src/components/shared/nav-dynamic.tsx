@@ -19,10 +19,9 @@ export function LocationSkeleton() {
 
 export function AuthSkeleton() {
   return (
-    <div className="h-9 in-[.is-scrolled]:h-7 w-full bg-white/10 border border-white/20 rounded animate-pulse" />
+    <div className="h-7 md:h-9 w-7 md:w-full bg-white/10 border border-white/40 rounded animate-pulse shrink-0" />
   );
 }
-
 function CategoryItemRow({ item }: { item: NavCategoryItem }) {
   const [isHovered, setIsHovered] = useState(false);
   const hasSub = Boolean(item.subcategories && item.subcategories.length > 0);

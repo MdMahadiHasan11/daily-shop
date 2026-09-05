@@ -119,5 +119,34 @@
     "socialTitle": "আমাদের সাথে যুক্ত থাকুন",
     "paymentPartner": "পেমেন্ট পার্টনার:",
     "rights": "সর্বস্বত্ব সংরক্ষিত।"
+  },
+  "UserDropdown": {
+    "customer": "গ্রাহক",
+    "dashboard": "ড্যাশবোর্ড",
+    "orderHistory": "অর্ডার ইতিহাস",
+    "personalInfo": "ব্যক্তিগত তথ্য",
+    "rewardPoints": "রিওয়ার্ড পয়েন্ট",
+    "addressBook": "ঠিকানা বই",
+    "wishlist": "পছন্দের তালিকা",
+    "logout": "লগআউট"
+  },
+  "Auth": {
+    "welcomeBack": "স্বাগতম",
+    "loginSubtitle": "আপনার অ্যাকাউন্টে প্রবেশ করতে তথ্য দিন",
+    "phoneOrEmail": "মোবাইল নম্বর বা ইমেইল",
+    "placeholderIdentifier": "নম্বর বা ইমেইল লিখুন",
+    "otpSentTo": "ওটিপি পাঠানো হয়েছে:",
+    "didNotReceiveCode": "কোড পাননি?",
+    "resendCodeIn": "পুনরায় কোড পাঠানো হবে",
+    "resendOtp": "কোড পুনরায় পাঠান",
+    "sending": "পাঠানো হচ্ছে...",
+    "processing": "প্রক্রিয়াধীন...",
+    "getOtp": "ওটিপি নিন",
+    "verifyAndLogin": "যাচাই করুন এবং লগইন করুন",
+    "changePhoneOrEmail": "নম্বর/ইমেইল পরিবর্তন করুন",
+    "dontHaveAccount": "কোনো অ্যাকাউন্ট নেই?",
+    "signUp": "সাইন আপ করুন",
+    "or": "অথবা",
+    "continueWithGoogle": "গুগল দিয়ে চালিয়ে যান"
   }
 }

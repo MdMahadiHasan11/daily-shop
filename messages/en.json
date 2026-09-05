@@ -119,5 +119,34 @@
     "socialTitle": "Connect With Us",
     "paymentPartner": "Payment Partner:",
     "rights": "All rights reserved."
+  },
+  "UserDropdown": {
+    "customer": "Customer",
+    "dashboard": "Dashboard",
+    "orderHistory": "Order History",
+    "personalInfo": "Personal Info",
+    "rewardPoints": "Reward Points",
+    "addressBook": "Address Book",
+    "wishlist": "Wishlist",
+    "logout": "Log out"
+  },
+  "Auth": {
+    "welcomeBack": "Welcome Back",
+    "loginSubtitle": "Enter your credentials to access your account",
+    "phoneOrEmail": "Phone Number or Email",
+    "placeholderIdentifier": "Enter phone or email",
+    "otpSentTo": "OTP sent to:",
+    "didNotReceiveCode": "Didn't receive code?",
+    "resendCodeIn": "Resend code in",
+    "resendOtp": "Resend OTP",
+    "sending": "Sending...",
+    "processing": "Processing...",
+    "getOtp": "Get OTP",
+    "verifyAndLogin": "Verify & Login",
+    "changePhoneOrEmail": "Change Phone/Email",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "or": "OR",
+    "continueWithGoogle": "Continue with Google"
   }
 }

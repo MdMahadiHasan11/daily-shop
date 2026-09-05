@@ -119,5 +119,34 @@
     "socialTitle": "हमसे जुड़े रहें",
     "paymentPartner": "भुगतान पार्टनर:",
     "rights": "सर्वाधिकार सुरक्षित।"
+  },
+  "UserDropdown": {
+    "customer": "ग्राहक",
+    "dashboard": "डैशबोर्ड",
+    "orderHistory": "ऑर्डर इतिहास",
+    "personalInfo": "व्यक्तिगत जानकारी",
+    "rewardPoints": "रिward पॉइंट्स",
+    "addressBook": "पता पुस्तिका",
+    "wishlist": "विशलिस्ट",
+    "logout": "लॉग आउट"
+  },
+  "Auth": {
+    "welcomeBack": "वापसी पर स्वागत है",
+    "loginSubtitle": "अपने खाते तक पहुंचने के लिए विवरण दर्ज करें",
+    "phoneOrEmail": "फ़ोन नंबर या ईमेल",
+    "placeholderIdentifier": "फ़ोन या ईमेल दर्ज करें",
+    "otpSentTo": "ओटीपी भेजा गया:",
+    "didNotReceiveCode": "कोड नहीं मिला?",
+    "resendCodeIn": "पुनः कोड भेजें",
+    "resendOtp": "ओटीपी पुनः भेजें",
+    "sending": "भेजा जा रहा है...",
+    "processing": "प्रक्रिया हो रही है...",
+    "getOtp": "ओटीपी प्राप्त करें",
+    "verifyAndLogin": " सत्यापित करें और लॉगिन करें",
+    "changePhoneOrEmail": "फ़ोन/ईमेल बदलें",
+    "dontHaveAccount": "खाता नहीं है?",
+    "signUp": "साइन अप करें",
+    "or": "या",
+    "continueWithGoogle": "गूगल के साथ जारी रखें"
   }
 }
