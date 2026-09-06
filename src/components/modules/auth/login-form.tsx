@@ -234,11 +234,7 @@ export const LoginForm = ({ redirect }: { redirect?: string }) => {
                   name="identifier"
                   value={state?.data?.identifier || ""}
                 />
-                <input
-                  type="hidden"
-                  name="id"
-                  value={state?.data?.user?.id || state?.data?.id || ""}
-                />
+
                 <Field>
                   <FloatingInput
                     key={`firstName-${state?.data?.firstName ?? "default"}`}

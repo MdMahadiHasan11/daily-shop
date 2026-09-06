@@ -1,7 +1,7 @@
 "use client";
 
-import { IUserInfo } from "@/services/auth/get-user-info";
 import { logoutAction } from "@/services/auth/logout-user";
+import { IUserInfo } from "@/types";
 import {
   BookOpen,
   ChevronDown,
@@ -17,7 +17,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 interface UserDropdownProps {
-  userInfo: IUserInfo;
+  userInfo: IUserInfo | undefined;
   dashboardRoute: string;
 }
 
@@ -55,7 +55,7 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
 
         {/* Name: Hidden on mobile, visible from md screens upwards + Truncated */}
         <span className="hidden md:inline truncate max-w-27.5 md:max-w-40">
-          {userInfo?.name || t("customer")}
+          {userInfo?.profile?.firstName || t("customer")}
         </span>
 
         {/* Chevron: Hidden on mobile, visible from md screens upwards */}
@@ -80,7 +80,7 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
 
           {/* Header title with truncate for long names */}
           <div className="px-3 py-2 font-semibold text-sm border-b border-zinc-100 dark:border-zinc-800 mb-1 text-zinc-900 dark:text-zinc-100 truncate max-w-full">
-            {userInfo?.name || t("customer")}
+            {userInfo?.profile?.lastName || t("customer")}
           </div>
 
           {/* Links */}

@@ -174,7 +174,6 @@ export const handleAuthStep = async (
       const skipProfile = formData.get("skip") === "true";
 
       if (!skipProfile) {
-        const id = formData.get("id") as string;
         const firstName = formData.get("firstName") as string;
         const lastName = formData.get("lastName") as string;
         const genderId = formData.get("genderId") as string;
@@ -200,11 +199,11 @@ export const handleAuthStep = async (
           return {
             ...validationResult,
             step: "COMPLETE_PROFILE",
-            data: { id, identifier, ...profileData },
+            data: { identifier, ...profileData },
           };
         }
 
-        const patchRes = await serverFetch.patch(`/user/${id}`, {
+        const patchRes = await serverFetch.patch(`/user`, {
           body: JSON.stringify(profileData),
           isPublic: false,
         });
@@ -219,7 +218,7 @@ export const handleAuthStep = async (
             success: false,
             message: patchResult.message || "Failed to update profile",
             step: "COMPLETE_PROFILE",
-            data: { id, identifier, ...profileData },
+            data: { identifier, ...profileData },
           };
         }
       }
