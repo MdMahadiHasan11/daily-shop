@@ -16,6 +16,7 @@ import {
   useTransition,
 } from "react";
 import { toast } from "sonner";
+import { CompleteProfileForm } from "./complete-profile-form";
 
 export const LoginForm = ({ redirect }: { redirect?: string }) => {
   const t = useTranslations("Auth");
@@ -59,7 +60,6 @@ export const LoginForm = ({ redirect }: { redirect?: string }) => {
 
   const handleOtpChange = (index: number, value: string) => {
     if (value && !/^\d+$/.test(value)) return;
-
     const newValues = [...otpValues];
     newValues[index] = value;
     setOtpValues(newValues);
@@ -97,7 +97,7 @@ export const LoginForm = ({ redirect }: { redirect?: string }) => {
   };
 
   const handleResendOtp = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // i make
+    e.preventDefault();
     if (!canResend) return;
 
     const identifier = state?.data?.identifier;
@@ -133,215 +133,112 @@ export const LoginForm = ({ redirect }: { redirect?: string }) => {
       : `${window.location.origin}${backendURL}/auth/google?redirect=${redirectTo}`;
     window.location.href = targetUrl;
   };
-  console.log(state);
+
   return (
     <div className="space-y-4">
-      <form action={formAction} autoComplete="off">
-        {redirect && <input type="hidden" name="redirect" value={redirect} />}
-        <input type="hidden" name="step" value={currentStep} />
+      {currentStep === "COMPLETE_PROFILE" ? (
+        <CompleteProfileForm
+          identifier={state?.data?.identifier}
+          redirect={redirect}
+        />
+      ) : (
+        <form action={formAction} autoComplete="off">
+          {redirect && <input type="hidden" name="redirect" value={redirect} />}
+          <input type="hidden" name="step" value={currentStep} />
 
-        <FieldGroup>
-          <div className="grid grid-cols-1 gap-4">
-            {currentStep === "INITIATE" && (
-              <Field>
-                <FloatingInput
-                  key={`identifier-${state?.data?.identifier ?? "default"}`}
-                  id="identifier"
-                  name="identifier"
-                  type="text"
-                  label={t("phoneOrEmail")}
-                  defaultValue={state?.data?.identifier ?? ""}
-                  required
-                  placeholder={t("placeholderIdentifier")}
-                  autoComplete="off"
-                />
-                <InputFieldError field="identifier" state={state} />
-              </Field>
-            )}
-
-            {currentStep === "VERIFY" && (
-              <>
-                <input
-                  type="hidden"
-                  name="identifier"
-                  value={state?.data?.identifier || ""}
-                />
-                <div className="text-sm text-gray-500 mb-1 text-center">
-                  {t("otpSentTo")}{" "}
-                  <span className="font-semibold text-gray-800">
-                    {state?.data?.identifier}
-                  </span>
-                </div>
-
+          <FieldGroup>
+            <div className="grid grid-cols-1 gap-4">
+              {currentStep === "INITIATE" && (
                 <Field>
-                  <div className="flex justify-center gap-2 sm:gap-3 my-2">
-                    {[0, 1, 2, 3, 4, 5].map((index) => (
-                      <input
-                        key={index}
-                        ref={(el) => {
-                          inputRefs.current[index] = el;
-                        }}
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={1}
-                        value={otpValues[index]}
-                        onChange={(e) => handleOtpChange(index, e.target.value)}
-                        onKeyDown={(e) => handleKeyDown(index, e)}
-                        onPaste={handlePaste}
-                        className="w-11 h-12 sm:w-12 sm:h-13 text-center text-xl font-bold rounded-[3px] border border-gray-300 bg-white text-gray-900 focus:border-blue-500 outline-none transition-all shadow-sm"
-                      />
-                    ))}
-                  </div>
+                  <FloatingInput
+                    id="identifier"
+                    name="identifier"
+                    type="text"
+                    label={t("phoneOrEmail")}
+                    defaultValue={state?.data?.identifier ?? ""}
+                    required
+                    placeholder={t("placeholderIdentifier")}
+                    autoComplete="off"
+                  />
+                  <InputFieldError field="identifier" state={state} />
+                </Field>
+              )}
 
-                  <input type="hidden" name="otp" value={otpValues.join("")} />
-
-                  <div className="flex items-center justify-between text-sm mt-2 px-1">
-                    <span className="text-gray-500">
-                      {canResend ? (
-                        t("didNotReceiveCode")
-                      ) : (
-                        <>
-                          {t("resendCodeIn")}{" "}
-                          <span className="font-semibold text-blue-600">
-                            {timeLeft}s
-                          </span>
-                        </>
-                      )}
+              {currentStep === "VERIFY" && (
+                <>
+                  <input
+                    type="hidden"
+                    name="identifier"
+                    value={state?.data?.identifier || ""}
+                  />
+                  <div className="text-sm text-gray-500 mb-1 text-center">
+                    {t("otpSentTo")}{" "}
+                    <span className="font-semibold text-gray-800">
+                      {state?.data?.identifier}
                     </span>
-                    <button
-                      type="button"
-                      onClick={handleResendOtp}
-                      disabled={!canResend || isResending}
-                      className={`font-semibold transition-colors ${
-                        canResend && !isResending
-                          ? "text-blue-600 hover:underline cursor-pointer"
-                          : "text-gray-300 cursor-not-allowed"
-                      }`}
-                    >
-                      {isResending ? t("sending") : t("resendOtp")}
-                    </button>
                   </div>
 
-                  <InputFieldError field="otp" state={state} />
-                </Field>
-              </>
-            )}
+                  <Field>
+                    <div className="flex justify-center gap-2 sm:gap-3 my-2">
+                      {[0, 1, 2, 3, 4, 5].map((index) => (
+                        <input
+                          key={index}
+                          ref={(el) => {
+                            inputRefs.current[index] = el;
+                          }}
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={1}
+                          value={otpValues[index]}
+                          onChange={(e) =>
+                            handleOtpChange(index, e.target.value)
+                          }
+                          onKeyDown={(e) => handleKeyDown(index, e)}
+                          onPaste={handlePaste}
+                          className="w-11 h-12 sm:w-12 sm:h-13 text-center text-xl font-bold rounded-[3px] border border-gray-300 bg-white text-gray-900 focus:border-blue-500 outline-none transition-all shadow-sm"
+                        />
+                      ))}
+                    </div>
 
-            {currentStep === "COMPLETE_PROFILE" && (
-              <div className="space-y-4">
-                <input
-                  type="hidden"
-                  name="identifier"
-                  value={state?.data?.identifier || ""}
-                />
-                <input
-                  type="hidden"
-                  name="id"
-                  value={state?.data?.user?.id || state?.data?.id || ""}
-                />
-                <Field>
-                  <FloatingInput
-                    key={`firstName-${state?.data?.firstName ?? "default"}`}
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    label="First Name"
-                    placeholder="Enter your first name"
-                    defaultValue={state?.data?.firstName ?? ""}
-                  />
-                  <InputFieldError field="firstName" state={state} />
-                </Field>
+                    <input
+                      type="hidden"
+                      name="otp"
+                      value={otpValues.join("")}
+                    />
 
-                <Field>
-                  <FloatingInput
-                    key={`lastName-${state?.data?.lastName ?? "default"}`}
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    label="Last Name"
-                    placeholder="Enter your last name"
-                    defaultValue={state?.data?.lastName ?? ""}
-                  />
-                  <InputFieldError field="lastName" state={state} />
-                </Field>
+                    <div className="flex items-center justify-between text-sm mt-2 px-1">
+                      <span className="text-gray-500">
+                        {canResend ? (
+                          t("didNotReceiveCode")
+                        ) : (
+                          <>
+                            {t("resendCodeIn")}{" "}
+                            <span className="font-semibold text-blue-600">
+                              {timeLeft}s
+                            </span>
+                          </>
+                        )}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleResendOtp}
+                        disabled={!canResend || isResending}
+                        className={`font-semibold transition-colors ${
+                          canResend && !isResending
+                            ? "text-blue-600 hover:underline cursor-pointer"
+                            : "text-gray-300 cursor-not-allowed"
+                        }`}
+                      >
+                        {isResending ? t("sending") : t("resendOtp")}
+                      </button>
+                    </div>
 
-                <Field>
-                  <div className="flex flex-col space-y-1.5">
-                    <label
-                      htmlFor="genderId"
-                      className="text-sm font-medium text-gray-700"
-                    >
-                      Gender
-                    </label>
-                    <select
-                      key={`gender-${state?.data?.genderId ?? "0"}`}
-                      defaultValue={state?.data?.genderId ?? undefined}
-                      id="genderId"
-                      name="genderId"
-                      className="border border-gray-300 rounded-[3px] p-2.5 text-sm bg-white outline-none focus:border-blue-500"
-                    >
-                      <option value="0">Not Specified</option>
-                      <option value="1">Male</option>
-                      <option value="2">Female</option>
-                    </select>
-                  </div>
-                  <InputFieldError field="genderId" state={state} />
-                </Field>
+                    <InputFieldError field="otp" state={state} />
+                  </Field>
+                </>
+              )}
+            </div>
 
-                <Field>
-                  <FloatingInput
-                    key={`dob-${state?.data?.dateOfBirth ?? "default"}`}
-                    id="dateOfBirth"
-                    name="dateOfBirth"
-                    type="date"
-                    label="Date of Birth"
-                    defaultValue={
-                      state?.data?.dateOfBirth
-                        ? state.data.dateOfBirth.split("T")[0]
-                        : ""
-                    }
-                  />
-                  <InputFieldError field="dateOfBirth" state={state} />
-                </Field>
-
-                <Field>
-                  <FloatingInput
-                    key={`bio-${state?.data?.bio ?? "default"}`}
-                    id="bio"
-                    name="bio"
-                    type="text"
-                    label="Bio"
-                    placeholder="Tell us about yourself"
-                    defaultValue={state?.data?.bio ?? ""}
-                  />
-                  <InputFieldError field="bio" state={state} />
-                </Field>
-
-                <div className="flex gap-2 pt-2">
-                  <Button
-                    type="submit"
-                    name="skip"
-                    value="true"
-                    variant="outline"
-                    className="w-1/2 rounded-sm py-5 cursor-pointer"
-                  >
-                    Skip
-                  </Button>
-                  <Button
-                    type="submit"
-                    name="skip"
-                    value="false"
-                    disabled={isPending}
-                    className="w-1/2 rounded-sm py-5 cursor-pointer"
-                  >
-                    Save & Continue
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {currentStep !== "COMPLETE_PROFILE" && (
             <FieldGroup className="mt-4">
               <Field>
                 <Button
@@ -377,9 +274,9 @@ export const LoginForm = ({ redirect }: { redirect?: string }) => {
                 </FieldDescription>
               </Field>
             </FieldGroup>
-          )}
-        </FieldGroup>
-      </form>
+          </FieldGroup>
+        </form>
+      )}
 
       {currentStep !== "COMPLETE_PROFILE" && (
         <>

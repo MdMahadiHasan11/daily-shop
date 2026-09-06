@@ -30,8 +30,7 @@ export async function AuthSection() {
   const t = await getTranslations("Navbar");
   const accessToken = await getCookie("accessToken");
   const userInfo = accessToken ? await getUserInfo() : null;
-  const isLoggedIn =
-    !!accessToken && !!userInfo && userInfo.name !== "Unknown User";
+  const isLoggedIn = !!accessToken && !!userInfo;
 
   const getDashboardRoute = (role?: string) => {
     switch (role) {
@@ -46,10 +45,12 @@ export async function AuthSection() {
     }
   };
 
-  const dashboardRoute = getDashboardRoute(userInfo?.role);
+  const dashboardRoute = getDashboardRoute(userInfo?.data?.role);
 
   if (isLoggedIn) {
-    return <UserDropdown userInfo={userInfo} dashboardRoute={dashboardRoute} />;
+    return (
+      <UserDropdown userInfo={userInfo.data} dashboardRoute={dashboardRoute} />
+    );
   }
 
   return (

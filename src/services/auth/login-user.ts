@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { tags } from "@/constants";
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zod-validator";
 import {
   loginInitiateZodSchema,
-  updateProfileZodSchema,
   verifyOtpZodSchema,
 } from "@/zod/auth.validation";
-import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import parseSetCookie from "set-cookie-parser";
 import { setCookie } from "./token-handlers";
@@ -21,7 +18,7 @@ export const handleAuthStep = async (
   const step = formData.get("step") || "INITIATE";
   const identifier = formData.get("identifier") as string;
   const otp = formData.get("otp") as string;
-  const redirectTo = formData.get("redirect") || null;
+  const redirectTo = (formData.get("redirect") as string) || "/";
 
   try {
     // -------------------------------------------------------------
@@ -105,7 +102,6 @@ export const handleAuthStep = async (
 
       const res = await serverFetch.post("/auth/login-register-verify", {
         body: JSON.stringify(payload),
-        isPublic: true,
       });
 
       const result = await res.json();
@@ -163,71 +159,7 @@ export const handleAuthStep = async (
         };
       }
 
-      // Redirect
-      if (redirectTo) {
-        redirect(`${redirectTo.toString()}?loggedIn=true`);
-      }
-      redirect("/?loggedIn=true");
-    }
-
-    if (step === "COMPLETE_PROFILE") {
-      const skipProfile = formData.get("skip") === "true";
-
-      if (!skipProfile) {
-        const id = formData.get("id") as string;
-        const firstName = formData.get("firstName") as string;
-        const lastName = formData.get("lastName") as string;
-        const genderId = formData.get("genderId") as string;
-        const dateOfBirth = formData.get("dateOfBirth") as string;
-        const bio = formData.get("bio") as string;
-
-        const profileData = {
-          firstName: firstName || undefined,
-          lastName: lastName || undefined,
-          genderId: genderId ? parseInt(genderId, 10) : undefined,
-          dateOfBirth: dateOfBirth
-            ? new Date(dateOfBirth).toISOString()
-            : undefined,
-          bio: bio || undefined,
-        };
-
-        const validationResult = zodValidator(
-          profileData,
-          updateProfileZodSchema,
-        );
-
-        if (validationResult.success === false) {
-          return {
-            ...validationResult,
-            step: "COMPLETE_PROFILE",
-            data: { id, identifier, ...profileData },
-          };
-        }
-
-        const patchRes = await serverFetch.patch(`/user/${id}`, {
-          body: JSON.stringify(profileData),
-          isPublic: false,
-        });
-        if (patchRes) {
-          revalidateTag(tags.userInfoTag, { expire: 0 });
-        }
-
-        const patchResult = await patchRes.json();
-
-        if (!patchRes.ok || !patchResult.success) {
-          return {
-            success: false,
-            message: patchResult.message || "Failed to update profile",
-            step: "COMPLETE_PROFILE",
-            data: { id, identifier, ...profileData },
-          };
-        }
-      }
-
-      if (redirectTo) {
-        redirect(`${redirectTo.toString()}?loggedIn=true`);
-      }
-      redirect("/?loggedIn=true");
+      redirect(`${redirectTo.toString()}?loggedIn=true`);
     }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
