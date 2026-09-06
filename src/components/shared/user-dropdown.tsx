@@ -80,7 +80,7 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
 
           {/* Header title with truncate for long names */}
           <div className="px-3 py-2 font-semibold text-sm border-b border-zinc-100 dark:border-zinc-800 mb-1 text-zinc-900 dark:text-zinc-100 truncate max-w-full">
-            {userInfo?.profile?.lastName || t("customer")}
+            {userInfo?.profile?.firstName} {userInfo?.profile?.lastName}
           </div>
 
           {/* Links */}
