@@ -54,8 +54,8 @@ export async function AuthSection() {
   }
 
   return (
-    <Link href="/login" className="block w-full">
-      <button className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center gap-1.5 disabled:opacity-50 select-none">
+    <Link href="/login" className="w-full flex">
+      <button className="cursor-pointer text-xs font-semibold px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center justify-center gap-1.5 disabled:opacity-50 select-none w-full">
         <User className="h-4 w-4 shrink-0" />
         <span>{t("auth")}</span>
       </button>

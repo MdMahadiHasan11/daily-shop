@@ -43,34 +43,29 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
     };
   }, []);
 
-  // Helper to safely get the user's full name or fallback
   const fullName = userInfo?.profile?.firstName
     ? `${userInfo.profile.firstName} ${userInfo.profile.lastName || ""}`.trim()
     : null;
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
-      {/* Trigger Button (Clickable) */}
+    <div className="relative inline-block text-left w-full" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="cursor-pointer text-xs font-semibold p-1.5 md:px-2.5 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-7 w-7 md:h-9 md:w-auto md:py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center justify-center md:gap-1.5 disabled:opacity-50 select-none"
+        className="cursor-pointer text-xs font-semibold px-2 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-7 md:h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center justify-center gap-1.5 w-full disabled:opacity-50 select-none"
       >
         <UserIcon className="h-4 w-4 shrink-0" />
 
-        {/* Name: Hidden on mobile, visible from md screens upwards + Truncated */}
-        <span className="hidden md:inline truncate max-w-27.5 md:max-w-40">
+        <span className="hidden md:inline truncate max-w-25">
           {userInfo?.profile?.firstName || t("customer")}
         </span>
 
-        {/* Chevron: Hidden on mobile, visible from md screens upwards */}
         <ChevronDown
           className={`hidden md:block h-3.5 w-3.5 shrink-0 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
-
       {/* Dropdown Menu Container */}
       <div
         className={`absolute right-0 pt-2 w-56 origin-top-right transition-all duration-200 ease-out z-50 ${
@@ -80,15 +75,12 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
         }`}
       >
         <div className="relative rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 shadow-2xl border border-zinc-200 dark:border-zinc-800 p-1.5">
-          {/* Top-Right Arrow pointing up */}
           <div className="absolute -top-1.5 md:right-5 right-2 h-3 w-3 rotate-45 bg-white dark:bg-zinc-950 border-t border-l border-zinc-200 dark:border-zinc-800" />
 
-          {/* Header title with truncate for long names */}
           <div className="px-3 py-2 font-semibold text-sm border-b border-zinc-100 dark:border-zinc-800 mb-1 text-zinc-900 dark:text-zinc-100 truncate max-w-full">
             {fullName || t("customer")}
           </div>
 
-          {/* Links */}
           <div className="space-y-0.5">
             <Link
               href={dashboardRoute}
@@ -147,7 +139,6 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
 
           <div className="my-1 h-px bg-zinc-100 dark:bg-zinc-800" />
 
-          {/* Logout Action Form / Button */}
           <form action={logoutAction}>
             <button
               type="submit"

@@ -19,20 +19,20 @@ export const handleUpdateProfile = async (
     const profile = formData.get("profile") === "profile";
 
     if (!skipProfile) {
-      const firstName = formData.get("firstName") as string;
-      const lastName = formData.get("lastName") as string;
+      // Use empty string fallback if the field is missing/empty
+      const firstName = (formData.get("firstName") as string) || "";
+      const lastName = (formData.get("lastName") as string) || "";
       const genderId = formData.get("genderId") as string;
-      const dateOfBirth = formData.get("dateOfBirth") as string;
-      const bio = formData.get("bio") as string;
+      const dateOfBirth = (formData.get("dateOfBirth") as string) || "";
+      const bio = (formData.get("bio") as string) || "";
 
       const profileData = {
-        firstName: firstName || undefined,
-        lastName: lastName || undefined,
-        genderId: genderId ? parseInt(genderId, 10) : undefined,
-        dateOfBirth: dateOfBirth
-          ? new Date(dateOfBirth).toISOString()
-          : undefined,
-        bio: bio || undefined,
+        firstName: firstName.trim() !== "" ? firstName.trim() : "",
+        lastName: lastName.trim() !== "" ? lastName.trim() : "",
+        genderId: genderId ? parseInt(genderId, 10) : 0,
+        dateOfBirth:
+          dateOfBirth.trim() !== "" ? new Date(dateOfBirth).toISOString() : "",
+        bio: bio.trim() !== "" ? bio.trim() : "",
       };
 
       const validationResult = zodValidator(
@@ -67,14 +67,16 @@ export const handleUpdateProfile = async (
           data: profileData,
         };
       }
+
       if (profile) {
         return {
           success: true,
           message: patchResult?.message,
-          data: profileData,
+          data: profileData || patchResult.data,
         };
       }
     }
+
     if (redirectTo) {
       redirect(`${redirectTo.toString()}?loggedIn=true`);
     }

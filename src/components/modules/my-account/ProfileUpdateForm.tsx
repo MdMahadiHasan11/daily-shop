@@ -1,12 +1,12 @@
 "use client";
 
+import DateSelect from "@/components/shared/date-select";
 import FloatingInput from "@/components/shared/floating-input";
 import InputFieldError from "@/components/shared/InputFieldError";
 import { handleUpdateProfile } from "@/services/auth/update-profile";
-
 import { IUserInfo } from "@/types";
-
-import { useActionState, useEffect } from "react";
+import dayjs from "dayjs";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function ProfileUpdateForm({
@@ -21,6 +21,14 @@ export default function ProfileUpdateForm({
 
   const profile = state?.data || initialData?.profile || {};
 
+  // Controlled states for components that need active interaction
+  const [genderId, setGenderId] = useState<string | number>(
+    profile?.genderId ?? 0,
+  );
+  const [dateOfBirth, setDateOfBirth] = useState(() =>
+    profile?.dateOfBirth ? dayjs(profile.dateOfBirth) : null,
+  );
+
   useEffect(() => {
     if (state && !state.success && state.message) {
       toast.error(state.message);
@@ -29,7 +37,6 @@ export default function ProfileUpdateForm({
     }
   }, [state]);
 
-  console.log(state);
   return (
     <form
       action={formAction}
@@ -45,6 +52,7 @@ export default function ProfileUpdateForm({
         </p>
       )}
       <input type="hidden" name="profile" value={"profile"} />
+
       {/* First Name */}
       <div className="flex flex-col space-y-1">
         <FloatingInput
@@ -75,34 +83,32 @@ export default function ProfileUpdateForm({
 
       {/* Gender */}
       <div className="flex flex-col space-y-1.5">
-        <label htmlFor="genderId" className="text-sm font-medium text-gray-700">
-          Gender
-        </label>
-        <select
-          key={`gender-${profile?.genderId ?? "0"}`}
-          id="genderId"
+        <FloatingInput.Select
           name="genderId"
-          defaultValue={profile?.genderId ?? 0}
-          className="border border-gray-300 rounded-[3px] p-2.5 text-sm bg-white outline-none focus:border-blue-500"
-        >
-          <option value="0">Not Specified</option>
-          <option value="1">Male</option>
-          <option value="2">Female</option>
-        </select>
+          label="Gender"
+          required={false}
+          placeholder="Select Gender"
+          value={genderId}
+          onChange={(val) => setGenderId(val ?? 0)}
+          options={[
+            { label: "Not Specified", value: 0 },
+            { label: "Male", value: 1 },
+            { label: "Female", value: 2 },
+          ]}
+        />
         <InputFieldError field="genderId" state={state} />
       </div>
 
       {/* Date of Birth */}
       <div className="flex flex-col space-y-1">
-        <FloatingInput
+        <DateSelect
           key={`dob-${profile?.dateOfBirth ?? "default"}`}
-          id="dateOfBirth"
-          name="dateOfBirth"
-          type="date"
           label="Date of Birth"
-          defaultValue={
-            profile?.dateOfBirth ? profile.dateOfBirth.split("T")[0] : ""
-          }
+          name="dateOfBirth"
+          value={dateOfBirth}
+          onChange={(date) => setDateOfBirth(date)}
+          maxDate={dayjs()}
+          allowClear={true}
         />
         <InputFieldError field="dateOfBirth" state={state} />
       </div>

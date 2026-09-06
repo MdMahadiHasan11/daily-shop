@@ -1,11 +1,13 @@
 "use client";
 
+import DateSelect from "@/components/shared/date-select";
 import FloatingInput from "@/components/shared/floating-input";
+
 import InputFieldError from "@/components/shared/InputFieldError";
 import { Button } from "@/components/ui/button";
-import { Field } from "@/components/ui/field";
 import { handleUpdateProfile } from "@/services/auth/update-profile";
-import { useActionState, useEffect } from "react";
+import dayjs from "dayjs";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface CompleteProfileFormProps {
@@ -18,6 +20,14 @@ export const CompleteProfileForm = ({ redirect }: CompleteProfileFormProps) => {
     null,
   );
 
+  // Controlled states for components that need active interaction
+  const [genderId, setGenderId] = useState<string | number>(
+    state?.genderId ?? 0,
+  );
+  const [dateOfBirth, setDateOfBirth] = useState(() =>
+    state?.dateOfBirth ? dayjs(state.dateOfBirth) : null,
+  );
+
   useEffect(() => {
     if (state && !state.success && state.message) {
       toast.error(state.message);
@@ -26,84 +36,85 @@ export const CompleteProfileForm = ({ redirect }: CompleteProfileFormProps) => {
     }
   }, [state]);
 
-  const currentData = state?.data;
+  const profile = state?.data;
 
   return (
     <form action={formAction} autoComplete="off" className="space-y-4">
       {redirect && <input type="hidden" name="redirect" value={redirect} />}
 
-      <Field>
+      {/* First Name */}
+      <div className="flex flex-col space-y-1">
         <FloatingInput
+          key={`firstName-${profile?.firstName ?? "default"}`}
           id="firstName"
           name="firstName"
           type="text"
           label="First Name"
           placeholder="Enter your first name"
-          defaultValue={currentData?.firstName ?? ""}
+          defaultValue={profile?.firstName ?? ""}
         />
         <InputFieldError field="firstName" state={state} />
-      </Field>
+      </div>
 
-      <Field>
+      {/* Last Name */}
+      <div className="flex flex-col space-y-1">
         <FloatingInput
+          key={`lastName-${profile?.lastName ?? "default"}`}
           id="lastName"
           name="lastName"
           type="text"
           label="Last Name"
           placeholder="Enter your last name"
-          defaultValue={currentData?.lastName ?? ""}
+          defaultValue={profile?.lastName ?? ""}
         />
         <InputFieldError field="lastName" state={state} />
-      </Field>
+      </div>
 
-      <Field>
-        <div className="flex flex-col space-y-1.5">
-          <label
-            htmlFor="genderId"
-            className="text-sm font-medium text-gray-700"
-          >
-            Gender
-          </label>
-          <select
-            defaultValue={currentData?.genderId ?? "0"}
-            id="genderId"
-            name="genderId"
-            className="border border-gray-300 rounded-[3px] p-2.5 text-sm bg-white outline-none focus:border-blue-500"
-          >
-            <option value="0">Not Specified</option>
-            <option value="1">Male</option>
-            <option value="2">Female</option>
-          </select>
-        </div>
+      {/* Gender */}
+      <div className="flex flex-col space-y-1.5">
+        <FloatingInput.Select
+          name="genderId"
+          label="Gender"
+          required={false}
+          placeholder="Select Gender"
+          value={genderId}
+          onChange={(val) => setGenderId(val ?? 0)}
+          options={[
+            { label: "Not Specified", value: 0 },
+            { label: "Male", value: 1 },
+            { label: "Female", value: 2 },
+          ]}
+        />
         <InputFieldError field="genderId" state={state} />
-      </Field>
+      </div>
 
-      <Field>
-        <FloatingInput
-          id="dateOfBirth"
-          name="dateOfBirth"
-          type="date"
+      {/* Date of Birth */}
+      <div className="flex flex-col space-y-1">
+        <DateSelect
+          key={`dob-${profile?.dateOfBirth ?? "default"}`}
           label="Date of Birth"
-          defaultValue={
-            currentData?.dateOfBirth
-              ? currentData.dateOfBirth.split("T")[0]
-              : ""
-          }
+          name="dateOfBirth"
+          value={dateOfBirth}
+          onChange={(date) => setDateOfBirth(date)}
+          maxDate={dayjs()}
+          allowClear={true}
         />
         <InputFieldError field="dateOfBirth" state={state} />
-      </Field>
+      </div>
 
-      <Field>
+      {/* Bio */}
+      <div className="flex flex-col space-y-1">
         <FloatingInput
+          key={`bio-${profile?.bio ?? "default"}`}
           id="bio"
           name="bio"
           type="text"
           label="Bio"
           placeholder="Tell us about yourself"
-          defaultValue={currentData?.bio ?? ""}
+          defaultValue={profile?.bio ?? ""}
         />
         <InputFieldError field="bio" state={state} />
-      </Field>
+      </div>
 
       <div className="flex gap-2 pt-2">
         <Button

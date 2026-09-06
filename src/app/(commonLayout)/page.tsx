@@ -7,6 +7,7 @@ import FeatureSection from "@/components/modules/home/feature-section";
 import FreshVegetables from "@/components/modules/home/fresh-vegetables";
 import HappyHourMain from "@/components/modules/home/happy-hour-main";
 import HeroAd from "@/components/modules/home/hero-ad";
+import HeroAdSkeleton from "@/components/modules/home/hero-skeleton";
 import HotTrending from "@/components/modules/home/hot-trending";
 import MonthlyDeals from "@/components/modules/home/monthly-deals";
 import Recommended from "@/components/modules/home/recommended";
@@ -14,6 +15,7 @@ import RefreshHimalaya from "@/components/modules/home/refresh-himalaya";
 import TodayFeatured from "@/components/modules/home/today-featured";
 import WeekdayDealsMain from "@/components/modules/home/weekday-deals-main";
 import Head from "next/head";
+import { Suspense } from "react";
 
 export default function Home({
   searchParams,
@@ -33,9 +35,12 @@ export default function Home({
       </Head>
       <main>
         <div className="container mx-auto px-6   ">
-          <div className=" ">
+          {/* <div className=" ">
             <HeroAd className="w-full max-w-305 ml-auto " />
-          </div>
+          </div> */}
+          <Suspense fallback={<HeroAdSkeleton />}>
+            <HeroAd className="w-full max-w-305 ml-auto " />
+          </Suspense>
           <div className=" ">
             <CategoryCards className="w-full max-w-308 ml-auto px-3 md:pl-6    " />
           </div>

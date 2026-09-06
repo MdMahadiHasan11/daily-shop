@@ -1,4 +1,4 @@
-import { heroAdData } from "@/data/hero-add";
+import { fetchHeroAd } from "@/lib/fake-api";
 import HeroAdCarousel from "./hero-ad-carousel";
 
 export default async function HeroAd({
@@ -9,9 +9,11 @@ export default async function HeroAd({
   title?: string;
   className?: string;
 }) {
-  const offers = heroAdData;
+  const offers = await fetchHeroAd();
 
-  if (!offers || offers.length === 0) return null;
-
-  return <HeroAdCarousel offers={offers} className={className} />;
+  return (
+    <div>
+      <HeroAdCarousel offers={offers} className={className} />
+    </div>
+  );
 }

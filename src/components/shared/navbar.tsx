@@ -45,11 +45,10 @@ export default async function Navbar() {
       </div>
 
       <NavbarScrollWrapper>
-        {/* Main Header Bar */}
         <nav className="bg-primary text-primary-foreground py-2.5 md:py-3.5 transition-all duration-300 ease-out in-[.is-scrolled]:md:py-2">
-          <div className="container mx-auto flex items-center justify-between px-3 md:px-6 gap-2 md:gap-4">
+          <div className="container mx-auto flex items-center justify-between px-3 gap-2 md:gap-4">
             {/* Logo & Mobile Menu */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2  ">
               <MobileMenu navItems={FIXED_NAV_ITEMS} categories={CATEGORIES} />
 
               <Link href="/" className="flex items-center space-x-1.5 shrink-0">
@@ -80,18 +79,19 @@ export default async function Navbar() {
             </div>
 
             {/* Right Actions (Language & Auth) */}
-            <div className="hidden md:flex items-center gap-2.5 shrink-0">
+            <div className="hidden md:grid grid-cols-[auto_1fr] gap-4  ">
               <NavbarLanguageDropdown />
 
-              <div className="w-32 md:w-36 shrink-0">
+              <div className="md:w-36">
                 <Suspense fallback={<AuthSkeleton />}>
                   <AuthSection />
                 </Suspense>
               </div>
             </div>
+
             {/* Mobile Auth Area */}
-            <div className="flex md:hidden items-center gap-1 shrink-0">
-              <div className="  h-6 flex items-center justify-center shrink-0">
+            <div className="flex md:hidden items-center gap-1  ">
+              <div className="  h-6 flex items-center justify-end shrink-0">
                 <Suspense fallback={<MobileAuthSkeleton />}>
                   <MobileAuthSection />
                 </Suspense>
@@ -100,17 +100,14 @@ export default async function Navbar() {
           </div>
         </nav>
 
-        {/* Secondary Category & Navigation Links Bar */}
         <div className="bg-white text-foreground border-b border-gray-200 hidden md:block">
           <div className="container mx-auto flex items-center justify-between px-3 md:px-6 text-xs font-bold tracking-wider transition-all duration-300 ease-out h-9 md:h-10 in-[.is-scrolled]:md:h-8.5">
-            {/* Category Dropdown */}
             <div className="hidden md:flex w-44 h-full shrink-0 items-center">
               <Suspense fallback={<CategorySkeleton />}>
                 <CategoryDropdown categories={CATEGORIES} />
               </Suspense>
             </div>
 
-            {/* Scrollable Nav Links */}
             <nav className="flex-1 flex items-center justify-start md:justify-center space-x-4 md:space-x-6 overflow-x-auto no-scrollbar py-0.5 mx-4">
               {FIXED_NAV_ITEMS.map((item) => (
                 <Link
@@ -123,7 +120,6 @@ export default async function Navbar() {
               ))}
             </nav>
 
-            {/* Extra Links (Outlets & Help) */}
             <div className="hidden lg:flex items-center space-x-4 text-muted-foreground font-normal shrink-0 border-l border-border pl-4">
               <Link
                 href="/outlets"

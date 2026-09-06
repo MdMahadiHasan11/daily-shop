@@ -91,49 +91,73 @@ export const setPasswordSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
 export const updateProfileZodSchema = z
   .object({
     firstName: z
       .string()
       .trim()
       .min(3, "First name must be at least 3 characters")
+      .nullable()
       .optional()
       .or(z.literal("")),
+
     lastName: z
       .string()
       .trim()
       .min(3, "Last name must be at least 3 characters")
+      .nullable()
       .optional()
       .or(z.literal("")),
-    genderId: z.coerce.number().default(0).optional(),
+
+    genderId: z.coerce.number().default(0).nullable().optional(),
+
     dateOfBirth: z
       .string()
+      .nullable()
       .optional()
       .or(z.literal(""))
       .refine((val) => !val || !isNaN(Date.parse(val)), {
         message: "Invalid date format for date of birth",
       }),
+
     bio: z
       .string()
       .max(255, "Bio cannot exceed 255 characters")
+      .nullable()
       .optional()
       .or(z.literal("")),
-    image: z.string().optional().or(z.literal("")),
+
+    image: z.string().nullable().optional().or(z.literal("")),
   })
   .refine(
     (data) => {
+      // Safe checks handling potential null/undefined values
       const hasFirstName = Boolean(
-        data.firstName && data.firstName.trim().length >= 3,
+        data.firstName &&
+        typeof data.firstName === "string" &&
+        data.firstName.trim().length >= 3,
       );
       const hasLastName = Boolean(
-        data.lastName && data.lastName.trim().length >= 3,
+        data.lastName &&
+        typeof data.lastName === "string" &&
+        data.lastName.trim().length >= 3,
       );
       const hasDob = Boolean(
-        data.dateOfBirth && data.dateOfBirth.trim().length > 0,
+        data.dateOfBirth &&
+        typeof data.dateOfBirth === "string" &&
+        data.dateOfBirth.trim().length > 0,
       );
-      const hasBio = Boolean(data.bio && data.bio.trim().length > 0);
-      const hasImage = Boolean(data.image && data.image.trim().length > 0);
+      const hasBio = Boolean(
+        data.bio && typeof data.bio === "string" && data.bio.trim().length > 0,
+      );
+      const hasImage = Boolean(
+        data.image &&
+        typeof data.image === "string" &&
+        data.image.trim().length > 0,
+      );
       const hasValidGender = data.genderId === 1 || data.genderId === 2;
+
       return (
         hasFirstName ||
         hasLastName ||
@@ -144,7 +168,7 @@ export const updateProfileZodSchema = z
       );
     },
     {
-      message: "At least one valid profile detail must be provided .",
+      message: "At least one valid profile detail must be provided.",
       path: ["firstName"],
     },
   );
