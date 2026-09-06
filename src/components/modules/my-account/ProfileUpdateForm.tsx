@@ -2,7 +2,7 @@
 
 import FloatingInput from "@/components/shared/floating-input";
 import InputFieldError from "@/components/shared/InputFieldError";
-import { updateProfile } from "@/services/auth/get-user-info";
+import { handleUpdateProfile } from "@/services/auth/update-profile";
 
 import { IUserInfo } from "@/types";
 
@@ -14,13 +14,12 @@ export default function ProfileUpdateForm({
 }: {
   initialData: IUserInfo | undefined;
 }) {
-  const [state, formAction, isPending] = useActionState(updateProfile, {
-    success: false,
-    message: "",
-    data: initialData,
-  });
+  const [state, formAction, isPending] = useActionState(
+    handleUpdateProfile,
+    null,
+  );
 
-  const profile = state?.data?.profile || state?.data || {};
+  const profile = state?.data || initialData?.profile || {};
 
   useEffect(() => {
     if (state && !state.success && state.message) {
@@ -30,18 +29,12 @@ export default function ProfileUpdateForm({
     }
   }, [state]);
 
+  console.log(state);
   return (
     <form
       action={formAction}
       className="space-y-4 max-w-xl mx-auto p-6 bg-white shadow-md rounded-md"
     >
-      {/* Hidden ID Field */}
-      <input
-        type="hidden"
-        name="id"
-        value={profile?.id ?? initialData?.id ?? ""}
-      />
-
       <h2 className="text-xl font-bold mb-4">Complete Your Profile</h2>
 
       {state?.message && (
@@ -51,7 +44,7 @@ export default function ProfileUpdateForm({
           {state.message}
         </p>
       )}
-
+      <input type="hidden" name="profile" value={"profile"} />
       {/* First Name */}
       <div className="flex flex-col space-y-1">
         <FloatingInput

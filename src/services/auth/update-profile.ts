@@ -12,14 +12,13 @@ export const handleUpdateProfile = async (
   _currentState: any,
   formData: FormData,
 ): Promise<any> => {
-  const identifier = formData.get("identifier") as string;
   const redirectTo = formData.get("redirect") || null;
 
   try {
     const skipProfile = formData.get("skip") === "true";
+    const profile = formData.get("profile") === "profile";
 
     if (!skipProfile) {
-      const id = formData.get("id") as string;
       const firstName = formData.get("firstName") as string;
       const lastName = formData.get("lastName") as string;
       const genderId = formData.get("genderId") as string;
@@ -45,11 +44,11 @@ export const handleUpdateProfile = async (
         return {
           ...validationResult,
           step: "COMPLETE_PROFILE",
-          data: { id, identifier, ...profileData },
+          data: profileData,
         };
       }
 
-      const patchRes = await serverFetch.patch(`/user/${id}`, {
+      const patchRes = await serverFetch.patch(`/user`, {
         body: JSON.stringify(profileData),
         isPublic: false,
       });
@@ -65,11 +64,17 @@ export const handleUpdateProfile = async (
           success: false,
           message: patchResult.message || "Failed to update profile",
           step: "COMPLETE_PROFILE",
-          data: { id, identifier, ...profileData },
+          data: profileData,
+        };
+      }
+      if (profile) {
+        return {
+          success: true,
+          message: patchResult?.message,
+          data: profileData,
         };
       }
     }
-
     if (redirectTo) {
       redirect(`${redirectTo.toString()}?loggedIn=true`);
     }
@@ -87,7 +92,7 @@ export const handleUpdateProfile = async (
           ? error.message
           : "Failed to update profile. Please try again.",
       step: "COMPLETE_PROFILE",
-      data: { identifier },
+      data: null,
     };
   }
 };

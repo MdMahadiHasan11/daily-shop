@@ -137,10 +137,7 @@ export const LoginForm = ({ redirect }: { redirect?: string }) => {
   return (
     <div className="space-y-4">
       {currentStep === "COMPLETE_PROFILE" ? (
-        <CompleteProfileForm
-          identifier={state?.data?.identifier}
-          redirect={redirect}
-        />
+        <CompleteProfileForm redirect={redirect} />
       ) : (
         <form action={formAction} autoComplete="off">
           {redirect && <input type="hidden" name="redirect" value={redirect} />}

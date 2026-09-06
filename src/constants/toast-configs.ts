@@ -16,9 +16,4 @@ export const authToastConfigs: ToastConfig[] = [
     message: "You have been logged out successfully.",
     type: "success",
   },
-  {
-    paramKey: "updated",
-    message: "Profile updated successfully.",
-    type: "success",
-  },
 ];

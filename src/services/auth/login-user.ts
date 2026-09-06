@@ -18,7 +18,7 @@ export const handleAuthStep = async (
   const step = formData.get("step") || "INITIATE";
   const identifier = formData.get("identifier") as string;
   const otp = formData.get("otp") as string;
-  const redirectTo = (formData.get("redirect") as string) || "/";
+  const redirectTo = (formData.get("redirect") as string) || null;
 
   try {
     // -------------------------------------------------------------
@@ -159,7 +159,10 @@ export const handleAuthStep = async (
         };
       }
 
-      redirect(`${redirectTo.toString()}?loggedIn=true`);
+      if (redirectTo) {
+        redirect(`${redirectTo.toString()}?loggedIn=true`);
+      }
+      redirect("/?loggedIn=true");
     }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {

@@ -9,14 +9,10 @@ import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface CompleteProfileFormProps {
-  identifier?: string;
   redirect?: string;
 }
 
-export const CompleteProfileForm = ({
-  identifier,
-  redirect,
-}: CompleteProfileFormProps) => {
+export const CompleteProfileForm = ({ redirect }: CompleteProfileFormProps) => {
   const [state, formAction, isPending] = useActionState(
     handleUpdateProfile,
     null,
@@ -35,7 +31,6 @@ export const CompleteProfileForm = ({
   return (
     <form action={formAction} autoComplete="off" className="space-y-4">
       {redirect && <input type="hidden" name="redirect" value={redirect} />}
-      <input type="hidden" name="identifier" value={identifier || ""} />
 
       <Field>
         <FloatingInput
