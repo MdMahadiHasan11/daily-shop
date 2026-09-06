@@ -1,5 +1,5 @@
-import LoginSuccessToast from "@/components/shared/login-success-toast";
-import LogoutSuccessToast from "@/components/shared/logout-success-toast";
+import SearchParamsToast from "@/components/shared/search-params-toast";
+import { authToastConfigs } from "@/constants";
 import { gilroy, greatVibes, hindSiliguri, playfair } from "@/lib/fonts";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
@@ -41,7 +41,6 @@ export default async function RootLayout({
       <head>
         <meta name="google" content="notranslate" />
         <meta name="googlebot" content="notranslate" />
-        {/* ২. ব্রাউজার ট্যাবে ফলব্যাক নিশ্চিত করার জন্য ফিক্সড টাইটেল ട্যাগ দিতে পারেন */}
         <title>Daily Shop</title>
       </head>
       <body
@@ -53,8 +52,7 @@ export default async function RootLayout({
           <Toaster richColors position="top-center" />
           {children}
           <Suspense fallback={null}>
-            <LoginSuccessToast />
-            <LogoutSuccessToast />
+            <SearchParamsToast configs={authToastConfigs} />
           </Suspense>
         </NextIntlClientProvider>
       </body>
