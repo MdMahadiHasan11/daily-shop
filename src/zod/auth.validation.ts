@@ -5,22 +5,22 @@ export const registerPatientValidationZodSchema = z
   .object({
     name: z.string().min(1, { message: "Name is required" }),
     address: z.string().optional(),
-    email: z.email({ message: "Valid email is required" }),
+    email: z.string().email({ message: "Valid email is required" }),
     password: z
       .string()
       .min(6, {
-        error: "Password is required and must be at least 6 characters long",
+        message: "Password is required and must be at least 6 characters long",
       })
       .max(100, {
-        error: "Password must be at most 100 characters long",
+        message: "Password must be at most 100 characters long",
       }),
     confirmPassword: z.string().min(6, {
-      error:
+      message:
         "Confirm Password is required and must be at least 6 characters long",
     }),
   })
   .refine((data: any) => data.password === data.confirmPassword, {
-    error: "Passwords do not match",
+    message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
@@ -64,7 +64,7 @@ export const resetPasswordSchema = z
   });
 
 export const forgotPasswordSchema = z.object({
-  email: z.email("Please enter a valid email address"),
+  email: z.string().email("Please enter a valid email address"),
 });
 
 export const changePasswordSchema = z
@@ -92,83 +92,50 @@ export const setPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-export const updateProfileZodSchema = z
-  .object({
-    firstName: z
-      .string()
-      .trim()
-      .min(3, "First name must be at least 3 characters")
-      .nullable()
-      .optional()
-      .or(z.literal("")),
+const GenderEnum = z.enum(["MALE", "FEMALE", "NOT_SPECIFIED"]);
 
-    lastName: z
-      .string()
-      .trim()
-      .min(3, "Last name must be at least 3 characters")
-      .nullable()
-      .optional()
-      .or(z.literal("")),
+// Address item schema supporting regular fields or id + isDeleted marker
+const addressItemSchema = z.object({
+  id: z.string().optional(),
+  fullName: z.string().optional().or(z.literal("")),
+  phoneNumber: z.string().optional().or(z.literal("")),
+  addressLine: z.string().optional().or(z.literal("")),
+  city: z.string().optional().or(z.literal("")),
+  area: z.string().optional().or(z.literal("")),
+  postalCode: z.string().optional().or(z.literal("")),
+  country: z.string().optional().or(z.literal("")),
+  isDefault: z.boolean().optional(),
+  isDeleted: z.boolean().optional(),
+});
 
-    genderId: z.coerce.number().default(0).nullable().optional(),
-
-    dateOfBirth: z
-      .string()
-      .nullable()
-      .optional()
-      .or(z.literal(""))
-      .refine((val) => !val || !isNaN(Date.parse(val)), {
-        message: "Invalid date format for date of birth",
-      }),
-
-    bio: z
-      .string()
-      .max(255, "Bio cannot exceed 255 characters")
-      .nullable()
-      .optional()
-      .or(z.literal("")),
-
-    image: z.string().nullable().optional().or(z.literal("")),
-  })
-  .refine(
-    (data) => {
-      // Safe checks handling potential null/undefined values
-      const hasFirstName = Boolean(
-        data.firstName &&
-        typeof data.firstName === "string" &&
-        data.firstName.trim().length >= 3,
-      );
-      const hasLastName = Boolean(
-        data.lastName &&
-        typeof data.lastName === "string" &&
-        data.lastName.trim().length >= 3,
-      );
-      const hasDob = Boolean(
-        data.dateOfBirth &&
-        typeof data.dateOfBirth === "string" &&
-        data.dateOfBirth.trim().length > 0,
-      );
-      const hasBio = Boolean(
-        data.bio && typeof data.bio === "string" && data.bio.trim().length > 0,
-      );
-      const hasImage = Boolean(
-        data.image &&
-        typeof data.image === "string" &&
-        data.image.trim().length > 0,
-      );
-      const hasValidGender = data.genderId === 1 || data.genderId === 2;
-
-      return (
-        hasFirstName ||
-        hasLastName ||
-        hasDob ||
-        hasBio ||
-        hasImage ||
-        hasValidGender
-      );
-    },
-    {
-      message: "At least one valid profile detail must be provided.",
-      path: ["firstName"],
-    },
-  );
+export const updateProfileZodSchema = z.object({
+  image: z.string().url("Invalid image URL").optional().or(z.literal("")),
+  email: z.string().email("Invalid email format").optional().or(z.literal("")),
+  phoneNumber: z.string().optional().or(z.literal("")),
+  profile: z
+    .object({
+      firstName: z
+        .string()
+        .trim()
+        .min(1, "First name is required")
+        .optional()
+        .or(z.literal("")),
+      lastName: z.string().trim().optional().or(z.literal("")).nullable(),
+      gender: GenderEnum.optional(),
+      dateOfBirth: z
+        .string()
+        .optional()
+        .or(z.literal(""))
+        .refine((val) => !val || !isNaN(Date.parse(val)), {
+          message: "Invalid date format for date of birth",
+        }),
+      bio: z
+        .string()
+        .max(255, "Bio cannot exceed 255 characters")
+        .optional()
+        .or(z.literal(""))
+        .nullable(),
+    })
+    .optional(),
+  addresses: z.array(addressItemSchema).optional(),
+});

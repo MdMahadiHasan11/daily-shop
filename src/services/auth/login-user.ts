@@ -20,6 +20,8 @@ export const handleAuthStep = async (
   const otp = formData.get("otp") as string;
   const redirectTo = (formData.get("redirect") as string) || null;
 
+  let redirectUrl: string | null = null;
+
   try {
     // -------------------------------------------------------------
     // STEP 1: Initiate Login / Register & Resend OTP
@@ -41,24 +43,43 @@ export const handleAuthStep = async (
       const isPhone = /^\+?\d+$/.test(identifier);
       const payload = isPhone ? { phone: identifier } : { email: identifier };
 
-      const res = await serverFetch.post("/auth/login-register-initiate", {
-        body: JSON.stringify(payload),
-        isPublic: true,
-      });
+      let res;
+      try {
+        res = await serverFetch.post("/auth/login-register-initiate", {
+          body: JSON.stringify(payload),
+          isPublic: true,
+        });
+      } catch (networkError) {
+        // Catches "Failed to fetch" / connection refused errors
+        console.error("Network connection error to backend:", networkError);
+        return {
+          success: false,
+          message:
+            "Unable to connect to the server. Please check if the backend is running.",
+          step: step === "RESEND" ? "VERIFY" : "INITIATE",
+          data: { identifier },
+        };
+      }
 
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        const phoneError = result.details?.find(
-          (err: any) => err.field === "body.phone",
-        );
+        const phoneError = Array.isArray(result.details)
+          ? result.details.find((err: any) => err.field === "body.phone")
+          : null;
+
+        const emailError = Array.isArray(result.details)
+          ? result.details.find((err: any) => err.field === "body.email")
+          : null;
+
         return {
           success: false,
           message:
             phoneError?.message ||
+            emailError?.message ||
             result.error ||
             result.message ||
-            "Failed to send OTP",
+            "Failed to send OTP. Please try again.",
           step: step === "RESEND" ? "VERIFY" : "INITIATE",
           data: { identifier },
         };
@@ -66,7 +87,7 @@ export const handleAuthStep = async (
 
       return {
         success: true,
-        message: result.data?.message || "OTP resent successfully",
+        message: result.data?.message || "OTP sent successfully",
         step: "VERIFY",
         data: { identifier },
       };
@@ -89,8 +110,9 @@ export const handleAuthStep = async (
       if (!identifier) {
         return {
           success: false,
-          message: "Missing identifier. Please provide one and try again.",
-          step: "VERIFY",
+          message:
+            "Missing identifier. Please provide your email or phone number.",
+          step: "INITIATE",
           data: { identifier, otp },
         };
       }
@@ -100,16 +122,29 @@ export const handleAuthStep = async (
         ? { phone: identifier, otp }
         : { email: identifier, otp };
 
-      const res = await serverFetch.post("/auth/login-register-verify", {
-        body: JSON.stringify(payload),
-      });
+      let res;
+      try {
+        res = await serverFetch.post("/auth/login-register", {
+          body: JSON.stringify(payload),
+        });
+      } catch (networkError) {
+        console.error("Network connection error to backend:", networkError);
+        return {
+          success: false,
+          message:
+            "Unable to connect to the server. Please verify your connection.",
+          step: "VERIFY",
+          data: { identifier, otp },
+        };
+      }
 
       const result = await res.json();
 
       if (!res.ok || !result.success) {
         return {
           success: false,
-          message: result.message || "Invalid or expired OTP",
+          message:
+            result.message || "Invalid or expired OTP. Please try again.",
           step: "VERIFY",
           data: { identifier, otp },
         };
@@ -119,7 +154,7 @@ export const handleAuthStep = async (
 
       if (!setCookieHeaders || setCookieHeaders.length === 0) {
         throw new Error(
-          "Server is busy right now. Please try again after some time.",
+          "Server configuration error: Authentication cookies missing from response.",
         );
       }
 
@@ -128,7 +163,9 @@ export const handleAuthStep = async (
       const refreshTokenCookie = parsedCookies["refreshToken"];
 
       if (!accessTokenCookie || !refreshTokenCookie) {
-        throw new Error("Tokens not found in response cookies");
+        throw new Error(
+          "Authentication tokens were not found in response cookies.",
+        );
       }
 
       // Set Access Token
@@ -159,10 +196,10 @@ export const handleAuthStep = async (
         };
       }
 
-      if (redirectTo) {
-        redirect(`${redirectTo.toString()}?loggedIn=true`);
-      }
-      redirect("/?loggedIn=true");
+      // Determine redirect path safely outside catch block
+      redirectUrl = redirectTo
+        ? `${redirectTo.toString()}?loggedIn=true`
+        : "/?loggedIn=true";
     }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
@@ -175,9 +212,14 @@ export const handleAuthStep = async (
       message:
         process.env.NODE_ENV === "development"
           ? error.message
-          : "Login Failed. You might have entered incorrect phone or email.",
+          : "Authentication failed. Please check your network and try again.",
       step: formData.get("step") || "INITIATE",
       data: { identifier },
     };
+  }
+
+  // Execute redirection outside of try/catch block
+  if (redirectUrl) {
+    redirect(redirectUrl);
   }
 };

@@ -52,6 +52,8 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
         className="cursor-pointer text-xs font-semibold px-2 border border-white/40 rounded text-white hover:bg-white/10 transition-all duration-300 ease-out h-7 md:h-9 py-1 in-[.is-scrolled]:md:h-8 in-[.is-scrolled]:md:py-0.5 flex items-center justify-center gap-1.5 w-full disabled:opacity-50 select-none"
       >
         <UserIcon className="h-4 w-4 shrink-0" />
@@ -66,6 +68,7 @@ export function UserDropdown({ userInfo, dashboardRoute }: UserDropdownProps) {
           }`}
         />
       </button>
+
       {/* Dropdown Menu Container */}
       <div
         className={`absolute right-0 pt-2 w-56 origin-top-right transition-all duration-200 ease-out z-50 ${

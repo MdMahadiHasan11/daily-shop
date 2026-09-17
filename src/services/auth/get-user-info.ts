@@ -7,9 +7,24 @@ import { tags } from "@/constants";
 import { serverFetch } from "@/lib/server-fetch";
 import { IUserInfo, TResponse } from "@/types";
 
-export const getUserInfo = async (): Promise<TResponse<IUserInfo>> => {
+interface GetUserInfoOptions {
+  include?: "location";
+}
+
+export const getUserInfo = async (
+  options?: GetUserInfoOptions,
+): Promise<TResponse<IUserInfo>> => {
   try {
-    const response = await serverFetch.get("/auth/me", {
+    // Build query parameters dynamically
+    const searchParams = new URLSearchParams();
+    if (options?.include) {
+      searchParams.append("include", options.include);
+    }
+
+    const queryString = searchParams.toString();
+    const endpoint = `/user/me${queryString ? `?${queryString}` : ""}`;
+
+    const response = await serverFetch.get(endpoint, {
       next: { tags: [tags.userInfoTag], revalidate: 900 },
     });
 
